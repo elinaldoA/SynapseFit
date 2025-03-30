@@ -69,14 +69,19 @@
                             </div>
 
                             <div class="row">
-                                <div class="col-lg-12">
+                                <div class="col-lg-6">
                                     <div class="form-group">
                                         <label class="form-control-label" for="email">Email<span class="small text-danger">*</span></label>
                                         <input type="email" id="email" class="form-control" name="email" placeholder="example@example.com" value="{{ old('email', Auth::user()->email) }}">
                                     </div>
                                 </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="form-control-label" for="weight">Peso<span class="small text-danger">*</span></label>
+                                        <input type="text" id="weight" class="form-control" name="weight" value="{{ old('weight', Auth::user()->weight) }}">
+                                    </div>
+                                </div>
                             </div>
-
                             <!-- Displaying calculated data -->
                             <h6 class="heading-small text-muted mb-4">Dados calculados</h6>
                             <div class="row">
