@@ -17,8 +17,6 @@ return new class extends Migration
             $table->integer('series_completed');
             $table->string('carga')->nullable();
             $table->string('status');
-            $table->string('total_carga')->nullable();
-            $table->string('total_calorias')->nullable();
             $table->timestamps();
         });
     }

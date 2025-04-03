@@ -11,7 +11,7 @@
                         <div class="col-lg-6">
                             <div class="p-5">
                                 <div class="text-center">
-                                    <h1 class="h4 text-gray-900 mb-4">{{ __('Register') }}</h1>
+                                    <h1 class="h4 text-gray-900 mb-4">{{ __('Registrar') }}</h1>
                                 </div>
 
                                 @if ($errors->any())
@@ -78,7 +78,7 @@
 
                                     <div class="form-group">
                                         <button type="submit" class="btn btn-primary btn-user btn-block">
-                                            {{ __('Register') }}
+                                            {{ __('Registrar') }}
                                         </button>
                                     </div>
                                 </form>
@@ -87,7 +87,7 @@
 
                                 <div class="text-center">
                                     <a class="small" href="{{ route('login') }}">
-                                        {{ __('Already have an account? Login!') }}
+                                        {{ __('Já tenho uma conta? Login!') }}
                                     </a>
                                 </div>
                             </div>

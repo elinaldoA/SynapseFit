@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.usuario')
 
 @section('main-content')
     <h1 class="h3 mb-4 text-gray-800">{{ __('Meus Treinos') }}</h1>
@@ -25,9 +25,9 @@
     <div class="card mt-3 mb-4 border-light shadow">
         <div class="card-header d-flex justify-content-between">
             <span>Meus Treinos</span>
-            <span>
+            <!--<span>
                 <a href="{{ route('workouts.export') }}" class="btn btn-primary btn-sm"><i class="fa fa-file-pdf-o"></i> Exportar PDF</a>
-            </span>
+            </span>-->
         </div>
 
         <div class="card-body">

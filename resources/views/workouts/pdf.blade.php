@@ -76,7 +76,10 @@
 <body>
 
     <h1>Meus Treinos</h1>
-
+    <div class="user-info">
+        <p><strong>Nome do Usuário:</strong> {{ Auth::user()->full_name  }}</p>
+        <p><strong>Objetivo:</strong> {{ Auth::user()->objetivo }}</p>
+    </div>
     @foreach ($groupedWorkouts as $type => $workouts)
         <div class="table-container">
             <h3>Ficha {{ $type }}</h3>

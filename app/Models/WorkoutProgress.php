@@ -13,9 +13,7 @@ class WorkoutProgress extends Model {
         'workout_id',
         'series_completed',
         'carga',
-        'status',
-        'total_carga',
-        'total_calorias',
+        'status'
     ];
 
     public function user() {

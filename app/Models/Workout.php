@@ -30,4 +30,8 @@ class Workout extends Model
     {
         return $this->belongsTo(Exercise::class);
     }
+    public function progress()
+    {
+        return $this->hasMany(WorkoutProgress::class);
+    }
 }

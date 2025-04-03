@@ -17,10 +17,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'last_name', 'email', 'password', 'height', 'weight', 'sex', 'age',
-        'imc', 'peso_ideal_inferior', 'peso_ideal_superior', 'calorias_recomendadas',
-        'imc_classificacao', 'massa_magra', 'percentual_gordura', 'massa_gordura',
-        'agua_corporal', 'visceral_fat', 'idade_corporal', 'bmr', 'objetivo'
+        'name', 'last_name', 'email', 'password', 'height', 'weight', 'sex', 'age','objetivo'
     ];
 
     /**
@@ -41,9 +38,10 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    /**
-     * Relacionamento com os Workouts (fichas de treino)
-     */
+    public function bioimpedance()
+    {
+        return $this->hasOne(Bioimpedance::class);
+    }
     public function workouts()
     {
         return $this->hasMany(Workout::class);
@@ -89,5 +87,24 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+     /**
+     * Verifica se o usuário é administrador
+     *
+     * @return bool
+     */
+    public function isAdmin()
+    {
+        return $this->role === 'admin';
+    }
+
+    /**
+     * Verifica se o usuário é aluno
+     *
+     * @return bool
+     */
+    public function isAluno()
+    {
+        return $this->role === 'aluno';
     }
 }

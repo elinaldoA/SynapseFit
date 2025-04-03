@@ -23,5 +23,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/workouts', [WorkoutController::class, 'index'])->name('workouts');
     Route::get('/workouts/type/{type}', [WorkoutController::class, 'show'])->name('workouts.show');
     Route::post('/save-progress', [WorkoutController::class, 'saveProgress'])->name('workouts.saveProgress');
+    Route::get('/get-progress/{userId}', [WorkoutController::class, 'getProgress']);
     Route::get('/workouts/export', [WorkoutController::class, 'exportToPdf'])->name('workouts.export');
 });

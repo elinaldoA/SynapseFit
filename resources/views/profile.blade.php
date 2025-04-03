@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.usuario')
 
 @section('main-content')
     <!-- Page Heading -->

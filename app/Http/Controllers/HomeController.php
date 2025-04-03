@@ -3,59 +3,56 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Models\Workout;
-use App\Models\Exercise;
+use App\Models\Bioimpedance;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
         $this->middleware('auth');
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
     public function index()
     {
-        // Exemplo de como você pode obter os dados (substitua pelos dados reais)
-        $user = auth()->user(); // Supondo que você tenha um usuário autenticado
+        $user = auth()->user();
 
-        // Aqui você precisa garantir que esses dados venham do banco ou de onde for necessário
-        $imc = $user->imc; // ou uma lógica para calcular o IMC
-        $percentualGordura = $user->percentual_gordura; // idem para gordura
-        $caloriasRecomendadas = $user->calorias_recomendadas;
-        $idadeCorporal = $user->idade_corporal;
-        $pesoIdealInferior = $user->peso_ideal_inferior;
-        $pesoIdealSuperior = $user->peso_ideal_superior;
-        $massaMagra = $user->massa_magra;
-        $massaGordura = $user->massa_gordura;
-        $aguaCorporal = $user->agua_corporal;
-        $visceralFat = $user->visceral_fat;
-        $bmr = $user->bmr; // Taxa de Metabolismo Basal
+        $bioimpedance = $user->bioimpedance;
 
-        // Passando todos os dados para a view
+        if ($bioimpedance) {
+            $imc = $bioimpedance->imc;
+            $percentualGordura = $bioimpedance->percentual_gordura;
+            $pesoIdealInferior = $bioimpedance->peso_ideal_inferior;
+            $pesoIdealSuperior = $bioimpedance->peso_ideal_superior;
+            $massaMagra = $bioimpedance->massa_magra;
+            $massaGordura = $bioimpedance->massa_gordura;
+            $aguaCorporal = $bioimpedance->agua_corporal;
+            $visceralFat = $bioimpedance->visceral_fat;
+            $idadeCorporal = $bioimpedance->idade_corporal;
+            $bmr = $bioimpedance->bmr;
+            $massaMuscular = $bioimpedance->massa_muscular;
+            $massaOssea = $bioimpedance->massa_ossea;
+            $grauObesidade = $bioimpedance->grau_obesidade;
+            $impedanciaSegmentos = $bioimpedance->impedancia_segmentos;
+        } else {
+            $imc = $percentualGordura = $pesoIdealInferior = $pesoIdealSuperior = $massaMagra = $massaGordura = $aguaCorporal
+            = $visceralFat = $idadeCorporal = $massaMuscular = $massaOssea = $bmr = null;
+        }
+
         return view('home', compact(
             'imc',
             'percentualGordura',
-            'caloriasRecomendadas',
-            'idadeCorporal',
             'pesoIdealInferior',
             'pesoIdealSuperior',
             'massaMagra',
             'massaGordura',
             'aguaCorporal',
             'visceralFat',
-            'bmr'
+            'idadeCorporal',
+            'bmr',
+            'massaMuscular',
+            'massaOssea',
         ));
     }
 }

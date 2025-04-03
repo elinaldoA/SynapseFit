@@ -17,22 +17,10 @@ return new class extends Migration
             $table->string('last_name');
             $table->string('email')->unique();
             $table->string('password');
-            $table->float('height'); // Altura
-            $table->float('weight'); // Peso
-            $table->enum('sex', ['male', 'female']); // Sexo
-            $table->integer('age'); // Idade
-            $table->decimal('imc', 5, 2)->nullable();
-            $table->decimal('peso_ideal_inferior', 5, 2)->nullable();
-            $table->decimal('peso_ideal_superior', 5, 2)->nullable();
-            $table->decimal('calorias_recomendadas', 8, 2)->nullable();
-            $table->string('imc_classificacao')->nullable();
-            $table->decimal('massa_magra', 8, 2)->nullable();
-            $table->decimal('percentual_gordura', 5, 2)->nullable();
-            $table->decimal('massa_gordura', 8, 2)->nullable();
-            $table->decimal('agua_corporal', 8, 2)->nullable();
-            $table->decimal('visceral_fat', 8, 2)->nullable();
-            $table->decimal('idade_corporal', 5, 2)->nullable();
-            $table->decimal('bmr', 8, 2)->nullable();
+            $table->float('height');
+            $table->float('weight');
+            $table->enum('sex', ['male', 'female']);
+            $table->integer('age');
             $table->string('objetivo');
             $table->rememberToken();
             $table->timestamps();

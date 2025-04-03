@@ -19,9 +19,9 @@ class WorkoutController extends Controller
         $user = Auth::user();
 
         $workouts = $user->workouts()
-            ->distinct('type') // Garante que os tipos de treino são distintos
-            ->with('exercise') // Carrega os dados do exercício
-            ->orderBy('type') // Ordena os treinos por tipo
+            ->distinct('type')
+            ->with('exercise')
+            ->orderBy('type')
             ->get(['type']);
 
         return view('workouts.index', compact('workouts'));
@@ -35,8 +35,6 @@ class WorkoutController extends Controller
 
         return view('workouts.show', compact('workouts', 'type', 'progress'));
     }
-
-
     public function exportToPdf()
     {
         $user = Auth::user();
@@ -47,7 +45,6 @@ class WorkoutController extends Controller
 
         return $pdf->stream('treinos_' . $user->name . '.pdf');
     }
-
     public function saveProgress(Request $request)
     {
         $validated = $request->validate([

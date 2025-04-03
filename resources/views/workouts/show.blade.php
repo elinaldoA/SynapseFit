@@ -1,7 +1,12 @@
-@extends('layouts.admin')
+@extends('layouts.usuario')
 
 @section('main-content')
     <h1 class="h3 mb-4 text-gray-800">{{ __('Meu treino') }}</h1>
+
+    <div class="alert alert-info">
+        <strong>Nome:</strong> {{ Auth::user()->name }} <br>
+        <strong>Objetivo:</strong> {{ Auth::user()->objetivo ?? 'Não definido' }}
+    </div>
 
     @if (session('success'))
         <div class="alert alert-success border-left-success alert-dismissible fade show" role="alert">
@@ -40,17 +45,25 @@
                             $progressData = $progress[$workout->id] ?? null;
                             $remainingSeries = $progressData ? $progressData->remaining_series : $workout->series;
                         @endphp
-                        <tr data-series="{{ $remainingSeries }}" data-rest="{{ $workout->descanso }}" data-id="{{ $workout->id }}">
+                        <tr data-series="{{ $remainingSeries }}" data-rest="{{ $workout->descanso }}"
+                            data-id="{{ $workout->id }}">
                             <td>{{ $workout->exercise->name }}</td>
-                            <td class="series-count">{{ $remainingSeries }}</td>
+                            <td class="series-count" data-value="{{ $remainingSeries }}">
+                                {{ str_repeat('✔ ', 3 - $remainingSeries) }}{{ $remainingSeries > 0 ? $remainingSeries : '' }}
+                            </td>
                             <td>{{ $workout->repeticoes }}</td>
                             <td>{{ $workout->descanso }} seg</td>
                             <td>
-                                <input type="number" class="form-control carga-input" placeholder="Carga (kg)" value="{{ $progress[$workout->id]->carga ?? $workout->carga }}" min="0" step="0.5" />
+                                <input type="number" class="form-control carga-input" placeholder="Carga (kg)"
+                                    value="{{ $progress[$workout->id]->carga ?? $workout->carga }}" min="0"
+                                    step="0.5" />
                             </td>
                             <td>
-                                <button class="btn btn-success startSet" @if ($remainingSeries == 0) style="display: none;" @endif>Iniciar Série</button>
-                                <button class="btn btn-danger endSet" @if ($remainingSeries == 0) style="display: none;" @endif>Finalizar Série</button>
+                                <button class="btn btn-danger endSet"
+                                    @if ($remainingSeries == 0) style="display: none;" @endif>Finalizar</button>
+                                <button class="btn btn-primary finishAllSets"
+                                    @if ($remainingSeries == 0) style="display: none;" @endif><i
+                                        class="fa fa-check-double"></i></button>
                             </td>
                         </tr>
                     @endforeach
@@ -67,12 +80,15 @@
                     <h5 class="modal-title">Tempo de Descanso</h5>
                 </div>
                 <div class="modal-body text-center">
-                    <div id="restTimer" class="circle-timer" style="position: relative; width: 150px; height: 150px; margin: 0 auto;">
+                    <div id="restTimer" class="circle-timer"
+                        style="position: relative; width: 150px; height: 150px; margin: 0 auto;">
                         <svg width="150" height="150" viewBox="0 0 150 150" style="display: block; margin: 0 auto;">
                             <circle cx="75" cy="75" r="70" stroke="#ddd" stroke-width="10" fill="none" />
-                            <circle id="circle" cx="75" cy="75" r="70" stroke="green" stroke-width="10" fill="none" stroke-dasharray="439.82" stroke-dashoffset="0" />
+                            <circle id="circle" cx="75" cy="75" r="70" stroke="green" stroke-width="10"
+                                fill="none" stroke-dasharray="439.82" stroke-dashoffset="0" />
                         </svg>
-                        <div id="timeDisplay" class="time-display" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 24px;">
+                        <div id="timeDisplay" class="time-display"
+                            style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 24px;">
                             00:00
                         </div>
                     </div>
@@ -83,7 +99,8 @@
     </div>
 
     <!-- Modal de Confirmação -->
-    <div class="modal fade" id="confirmEndWorkoutModal" tabindex="-1" role="dialog" aria-labelledby="confirmEndWorkoutModalLabel" aria-hidden="true">
+    <div class="modal fade" id="confirmEndWorkoutModal" tabindex="-1" role="dialog"
+        aria-labelledby="confirmEndWorkoutModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-fullscreen" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -101,21 +118,24 @@
     </div>
 
     <!-- Modal de Parabéns -->
-    <div class="modal fade" id="congratulationsModal" tabindex="-1" role="dialog" aria-labelledby="congratulationsModalLabel" aria-hidden="true">
+    <div class="modal fade" id="congratulationsModal" tabindex="-1" role="dialog"
+        aria-labelledby="congratulationsModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-fullscreen" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="congratulationsModalLabel">
-                        <i class="fas fa-trophy"></i> Parabéns, {{Auth::user()->name}}!
+                        <i class="fas fa-trophy"></i> Parabéns, {{ Auth::user()->name }}!
                     </h5>
                 </div>
                 <div class="modal-body">
-                    <p><i class="fas fa-dumbbell"></i> Você completou o treino com sucesso e deu um grande passo para alcançar seus objetivos!</p>
+                    <p><i class="fas fa-dumbbell"></i> Você completou o treino com sucesso e deu um grande passo para
+                        alcançar seus objetivos!</p>
                     <p>Continue assim e vença cada desafio!</p>
                     <p><strong>Total de Carga Levantada:</strong> <span id="totalCarga"></span> kg</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-success" data-dismiss="modal"><i class="fas fa-check-circle"></i> Fechar</button>
+                    <button type="button" class="btn btn-success" data-dismiss="modal"><i
+                            class="fas fa-check-circle"></i> Fechar</button>
                 </div>
             </div>
         </div>
@@ -123,9 +143,9 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            const finishAllSetsButtons = document.querySelectorAll('.finishAllSets');
             const startWorkout = document.getElementById('startWorkout');
             const endWorkout = document.getElementById('endWorkout');
-            const startSetButtons = document.querySelectorAll('.startSet');
             const endSetButtons = document.querySelectorAll('.endSet');
             const restModal = new bootstrap.Modal(document.getElementById('restModal'));
             const restTimer = document.getElementById('restTimer');
@@ -138,13 +158,56 @@
             let totalCarga = 0;
 
             restoreButtonStates();
+            window.addEventListener('beforeunload', saveButtonStates);
+
+            // ✅ Lógica para o botão "Finalizar todas as séries"
+            finishAllSetsButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const row = this.closest('tr'); // Pega a linha do exercício específico
+                    const seriesCount = row.querySelector('.series-count');
+                    const endSetButton = row.querySelector('.endSet');
+                    const finishAllSetsButton = row.querySelector('.finishAllSets');
+
+                    let remainingSeries = parseInt(seriesCount.textContent);
+
+                    // Finaliza todas as 3 séries clicando no botão "Finalizar Série"
+                    while (remainingSeries > 0) {
+                        endSetButton.click(); // Simula o clique no botão "Finalizar Série"
+                        remainingSeries--;
+                    }
+
+                    // Desabilita o botão "Finalizar Todas as Séries" após ser clicado
+                    this.disabled = true;
+                });
+            });
 
             startWorkout.addEventListener('click', function() {
                 startWorkout.disabled = true;
-                endWorkout.disabled = false;  // Habilita o botão "Finalizar Treino"
-                startSetButtons.forEach(btn => btn.disabled = false);
+                endWorkout.disabled = false;
+                restoreAllSets();
+                updateButtonStates();
+
+                // ✅ Garante que os eventos de clique sejam adicionados novamente
+                finishAllSetsButtons.forEach(button => {
+                    button.addEventListener('click', function() {
+                        const row = this.closest('tr');
+                        const seriesCount = row.querySelector('.series-count');
+                        const endSetButton = row.querySelector('.endSet');
+
+                        let remainingSeries = parseInt(seriesCount.textContent);
+
+                        while (remainingSeries > 0) {
+                            endSetButton.click();
+                            remainingSeries--;
+                        }
+
+                        this.disabled = true;
+                    });
+                });
+
                 saveButtonStates();
             });
+
 
             endWorkout.addEventListener('click', function() {
                 confirmEndWorkoutModal.show();
@@ -152,18 +215,14 @@
 
             document.getElementById('confirmEndWorkout').addEventListener('click', function() {
                 confirmEndWorkoutModal.hide();
-                // Exibir o total de carga no modal de Parabéns
                 document.getElementById('totalCarga').textContent = totalCarga.toFixed(2);
                 congratulationsModal.show();
-            });
 
-            document.querySelectorAll('.startSet').forEach(button => {
-                button.addEventListener('click', function() {
-                    let row = this.closest('tr');
-                    let endSetButton = row.querySelector('.endSet');
-                    this.disabled = true;
-                    endSetButton.disabled = false;
-                });
+                setTimeout(function() {
+                    location.reload();
+                }, 1000);
+
+                restoreAllButtonsAfterWorkout();
             });
 
             document.querySelectorAll('.endSet').forEach(button => {
@@ -171,19 +230,22 @@
                     let row = this.closest('tr');
                     let seriesCount = row.querySelector('.series-count');
                     let restTime = parseInt(row.getAttribute('data-rest'));
-                    let currentSeries = parseInt(seriesCount.textContent);
+                    let currentSeries = parseInt(seriesCount.dataset.value, 10) || 3;
 
-                    // Somar a carga total
                     let carga = parseFloat(row.querySelector('.carga-input').value.trim()) || 0;
                     totalCarga += carga;
 
                     if (currentSeries > 1) {
-                        seriesCount.textContent = currentSeries - 1;
+                        currentSeries -= 1;
+                        seriesCount.dataset.value = currentSeries;
+                        seriesCount.innerHTML = `${'✔ '.repeat(3 - currentSeries)}${currentSeries}`;
                         startRestTimer(restTime, row);
                     } else if (currentSeries === 1) {
-                        seriesCount.textContent = 'Finalizado';
+                        seriesCount.dataset.value = 3;
+                        seriesCount.innerHTML = '✔ ✔ ✔';
                         this.disabled = true;
-                        row.querySelector('.startSet').disabled = true;
+                        row.querySelector('.endSet').disabled = true;
+                        row.querySelector('.finishAllSets').disabled = true;
                         startRestTimer(restTime, row);
                     }
 
@@ -241,39 +303,131 @@
 
             function saveWorkoutProgress(row) {
                 const workoutId = row.getAttribute('data-id');
-                let remainingSeries = row.querySelector('.series-count').textContent.trim();
-
-                if (remainingSeries === 'Finalizado') {
-                    remainingSeries = 0;
-                }
-
-                const carga = row.querySelector('.carga-input').value.trim();
-                let status = 'Em andamento'; // Default status
-
-                if (remainingSeries === 0) {
-                    status = 'Finalizado'; // Treino finalizado
-                }
+                let remainingSeries = parseInt(row.querySelector('.series-count').dataset.value, 10) || 3;
+                let carga = row.querySelector('.carga-input').value.trim();
+                let status = remainingSeries === 3 ? 'Finalizado' : 'Em andamento';
 
                 fetch('/save-progress', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                    },
-                    body: JSON.stringify({ workout_id: workoutId, series_completed: remainingSeries, carga: carga, status: status })
-                })
-                .then(response => response.json())
-                .then(data => console.log('Progresso salvo', data))
-                .catch(error => console.error('Erro ao salvar progresso', error));
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
+                                'content'),
+                        },
+                        body: JSON.stringify({
+                            workout_id: workoutId,
+                            series_completed: remainingSeries,
+                            carga: carga,
+                            status: status
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => console.log('Progresso salvo', data))
+                    .catch(error => console.error('Erro ao salvar progresso', error));
+            }
+
+
+            function saveButtonStates() {
+                const buttonStates = {};
+
+                // Itera sobre todos os botões de "Iniciar Série" e "Finalizar Série"
+                document.querySelectorAll('.startSet').forEach(button => {
+                    button.addEventListener('click', function() {
+                        let row = this.closest('tr');
+                        let endSetButton = row.querySelector('.endSet');
+                        // Desabilita o botão "Iniciar Série" ao clicar nele
+                        this.disabled = true;
+                        // Habilita o botão "Finalizar Série" ao clicar no botão "Iniciar Série"
+                        endSetButton.disabled = false;
+                    });
+                });
+
+
+                // Salva os estados dos botões de treino
+                const workoutButtonsState = {
+                    startWorkoutDisabled: document.getElementById('startWorkout').disabled,
+                    endWorkoutDisabled: document.getElementById('endWorkout').disabled
+                };
+
+                // Adiciona os estados dos botões de treino ao objeto de estados
+                buttonStates['workout'] = workoutButtonsState;
+
+                // Salva os estados no localStorage
+                localStorage.setItem('buttonStates', JSON.stringify(buttonStates));
             }
 
             function restoreButtonStates() {
-                // Código para restaurar os estados dos botões após recarregar a página
+                const buttonStates = JSON.parse(localStorage.getItem('buttonStates')) || {};
+
+                if (buttonStates['workout']) {
+                    const startWorkoutButton = document.getElementById('startWorkout');
+                    const endWorkoutButton = document.getElementById('endWorkout');
+
+                    if (startWorkoutButton) {
+                        startWorkoutButton.disabled = buttonStates['workout'].startWorkoutDisabled;
+                    }
+
+                    if (endWorkoutButton) {
+                        endWorkoutButton.disabled = buttonStates['workout'].endWorkoutDisabled;
+
+                        // Se o treino já foi iniciado, habilita os botões de "Finalizar Série"
+                        if (!startWorkoutButton.disabled) {
+                            document.querySelectorAll('.endSet, .finishAllSets').forEach(btn => {
+                                btn.style.display = 'inline-block';
+                                btn.disabled = false;
+                            });
+                        }
+                    }
+                }
             }
 
-            function saveButtonStates() {
-                // Código para salvar os estados dos botões antes de navegar ou recarregar a página
+
+            function updateButtonStates() {
+                const isWorkoutActive = !endWorkout.disabled;
+                document.querySelectorAll('.endSet').forEach(btn => btn.disabled = !isWorkoutActive);
+                document.querySelectorAll('.finishAllSets').forEach(btn => btn.disabled = !isWorkoutActive);
+            }
+
+            function restoreAllButtonsAfterWorkout() {
+                // Restaura os botões de treino após o fim do treino
+                startWorkout.disabled = false; // Habilita o botão "Iniciar Treino"
+                endWorkout.disabled = true; // Desabilita o botão "Finalizar Treino"
+
+                // Restaura os botões de série e seus contadores
+                document.querySelectorAll('tr').forEach(row => {
+                    const endSetButton = row.querySelector('.endSet');
+                    const finishAllSetsButton = row.querySelector('.finishAllSets');
+                    const seriesCount = row.querySelector('.series-count');
+
+                    if (endSetButton) {
+                        endSetButton.disabled = false; // Habilita o botão "Finalizar Série"
+                    }
+                    if (finishAllSetsButton) {
+                        finishAllSetsButton.disabled =
+                        false; // Habilita o botão "Finalizar Todas as Séries"
+                    }
+                    if (seriesCount) {
+                        seriesCount.dataset.value = 3; // Reinicia o contador de séries no dataset
+                        seriesCount.textContent = '3'; // Atualiza a interface com 3 séries restantes
+                    }
+                });
+
+                updateButtonStates(); // Agora a função está definida e pode ser chamada
+                saveButtonStates(); // Salva o estado atualizado
+            }
+
+
+
+            function restoreAllSets() {
+                document.querySelectorAll('.finishAllSets').forEach(button => {
+                    button.disabled = false; // Habilita o botão "Finalizar Todas as Séries"
+                });
+
+                // Reinicia os contadores de séries
+                document.querySelectorAll('.series-count').forEach(count => {
+                    count.textContent = 3;
+                });
             }
         });
     </script>
