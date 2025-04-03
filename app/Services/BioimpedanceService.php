@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Services;
 
 use App\Models\Bioimpedance;
@@ -14,6 +15,7 @@ class BioimpedanceService
         $age = $user->age;
         $sex = $user->sex;
 
+        // Cálculos anteriores
         $imc = $weight / ($height * $height);
         $massaMagra = $this->calcularMassaMagra($weight, $height, $sex);
         $percentualGordura = $this->calcularPercentualGordura($imc, $age, $sex);
@@ -27,6 +29,13 @@ class BioimpedanceService
         $massaMuscular = $this->calcularMassaMuscular($weight, $height, $sex);
         $massaOssea = $this->calcularMassaOssea($weight, $height, $sex);
 
+        // Calcular o grau de obesidade
+        $grauObesidade = $this->calcularGrauObesidade($imc);
+
+        // Calcular a impedância dos segmentos (simplificado)
+        $impedanciaSegmentos = $this->calcularImpedanciaSegmentos($massaMagra, $percentualGordura);
+
+        // Salvar os dados no banco de dados
         Bioimpedance::create([
             'user_id' => $user->id,
             'imc' => round($imc, 2),
@@ -41,6 +50,8 @@ class BioimpedanceService
             'bmr' => round($bmr, 2),
             'massa_muscular' => round($massaMuscular, 2),
             'massa_ossea' => round($massaOssea, 2),
+            'grau_obesidade' => $grauObesidade,
+            'impedancia_segmentos' => round($impedanciaSegmentos, 2),
             'data_medicao' => now(),
         ]);
 
@@ -57,7 +68,34 @@ class BioimpedanceService
             'bmr' => round($bmr, 2),
             'massa_muscular' => round($massaMuscular, 2),
             'massa_ossea' => round($massaOssea, 2),
+            'grau_obesidade' => $grauObesidade,
+            'impedancia_segmentos' => round($impedanciaSegmentos, 2),
         ];
+    }
+
+    // Função para calcular o grau de obesidade
+    private function calcularGrauObesidade($imc)
+    {
+        if ($imc < 18.5) {
+            return 'Abaixo do peso';
+        } elseif ($imc >= 18.5 && $imc < 25) {
+            return 'Peso normal';
+        } elseif ($imc >= 25 && $imc < 30) {
+            return 'Sobrepeso';
+        } elseif ($imc >= 30 && $imc < 35) {
+            return 'Obesidade grau 1';
+        } elseif ($imc >= 35 && $imc < 40) {
+            return 'Obesidade grau 2';
+        } else {
+            return 'Obesidade grau 3';
+        }
+    }
+
+    // Função simplificada para calcular a impedância dos segmentos
+    private function calcularImpedanciaSegmentos($massaMagra, $percentualGordura)
+    {
+        // Exemplo simplificado de cálculo de impedância baseado na massa magra e percentual de gordura
+        return (0.1 * $massaMagra) + (0.2 * $percentualGordura);
     }
 
     private function calcularMassaMuscular($weight, $height, $sex)

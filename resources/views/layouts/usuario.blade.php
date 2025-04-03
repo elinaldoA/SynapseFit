@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="Laravel SB Admin 2">
-    <meta name="author" content="Alejandro RH">
+    <meta name="author" content="Elinaldo Agostinho">
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -61,7 +61,15 @@
         <li class="nav-item {{ Nav::isRoute('profile') }}">
             <a class="nav-link" href="{{ route('profile') }}">
                 <i class="fas fa-fw fa-user"></i>
-                <span>{{ __('Profile') }}</span>
+                <span>{{ __('Perfil') }}</span>
+            </a>
+        </li>
+
+        <!-- Nav Item - About -->
+        <li class="nav-item {{ Nav::isRoute('alimentacao') }}">
+            <a class="nav-link" href="{{ route('alimentacao') }}">
+                <i class="fas fa-fw fa-list"></i>
+                <span>{{ __('Dietas') }}</span>
             </a>
         </li>
 
@@ -301,5 +309,17 @@
 <script src="{{ asset('vendor/bootstrap/js/bootstrap.min.js') }}"></script>
 <script src="{{ asset('vendor/jquery-easing/jquery.easing.min.js') }}"></script>
 <script src="{{ asset('js/sb-admin-2.min.js') }}"></script>
+<script>
+    // Fechar todas as mensagens de alerta automaticamente após 5 segundos
+    document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(function() {
+            // Fechar qualquer mensagem de alerta com as classes de sucesso, erro, etc.
+            const alertMessages = document.querySelectorAll('.alert');
+            alertMessages.forEach(function(alert) {
+                alert.style.display = 'none';
+            });
+        }, 5000); // Tempo em milissegundos (5000ms = 5 segundos)
+    });
+</script>
 </body>
 </html>

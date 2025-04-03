@@ -18,7 +18,10 @@ class HomeController extends Controller
     {
         $user = auth()->user();
 
-        $bioimpedance = $user->bioimpedance;
+        // Pegando a última medição de bioimpedância do usuário
+        $bioimpedance = Bioimpedance::where('user_id', $user->id)
+            ->orderByDesc('data_medicao')
+            ->first();
 
         if ($bioimpedance) {
             $imc = $bioimpedance->imc;
@@ -33,11 +36,15 @@ class HomeController extends Controller
             $bmr = $bioimpedance->bmr;
             $massaMuscular = $bioimpedance->massa_muscular;
             $massaOssea = $bioimpedance->massa_ossea;
-            $grauObesidade = $bioimpedance->grau_obesidade;
-            $impedanciaSegmentos = $bioimpedance->impedancia_segmentos;
+            $grauObesidade = $bioimpedance->grau_obesidade ?? 'Não disponível';
+            $impedanciaSegmentos = $bioimpedance->impedancia_segmentos ?? 'Não disponível';
         } else {
-            $imc = $percentualGordura = $pesoIdealInferior = $pesoIdealSuperior = $massaMagra = $massaGordura = $aguaCorporal
-            = $visceralFat = $idadeCorporal = $massaMuscular = $massaOssea = $bmr = null;
+            // Se não houver medições, definir valores padrões
+            $imc = $percentualGordura = $pesoIdealInferior = $pesoIdealSuperior = $massaMagra = $massaGordura =
+            $aguaCorporal = $visceralFat = $idadeCorporal = $bmr = $massaMuscular = $massaOssea = null;
+
+            $grauObesidade = 'Não disponível';
+            $impedanciaSegmentos = 'Não disponível';
         }
 
         return view('home', compact(
@@ -53,6 +60,8 @@ class HomeController extends Controller
             'bmr',
             'massaMuscular',
             'massaOssea',
+            'grauObesidade',
+            'impedanciaSegmentos'
         ));
     }
 }

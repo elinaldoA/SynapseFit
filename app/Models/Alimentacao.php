@@ -5,21 +5,24 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Dieta extends Model
+class Alimentacao extends Model
 {
     use HasFactory;
 
+    protected $table = 'alimentacoes';
+
     protected $fillable = [
         'user_id',
+        'alimento',
+        'quantidade',
         'calorias',
         'proteinas',
         'carboidratos',
         'gorduras',
         'agua',
-        'suplementos',
     ];
 
-    // Relacionamento com o modelo User
+    // Relacionamento com o usuário
     public function user()
     {
         return $this->belongsTo(User::class);

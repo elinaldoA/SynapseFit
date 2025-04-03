@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 class CreateBioimpedancesTable extends Migration
 {
     /**
-     * Execute as the migrations.
+     * Execute as migrations.
      *
      * @return void
      */
@@ -28,6 +28,8 @@ class CreateBioimpedancesTable extends Migration
             $table->float('bmr');
             $table->decimal('massa_muscular', 5, 2)->nullable();
             $table->decimal('massa_ossea', 5, 2)->nullable();
+            $table->string('grau_obesidade')->nullable();
+            $table->decimal('impedancia_segmentos', 8, 2)->nullable();
             $table->timestamp('data_medicao')->useCurrent();
             $table->timestamps();
         });

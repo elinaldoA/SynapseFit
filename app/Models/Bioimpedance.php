@@ -9,9 +9,10 @@ class Bioimpedance extends Model
 {
     use HasFactory;
 
-    // Defina os campos que podem ser preenchidos
+    protected $table = 'bioimpedances';
+
     protected $fillable = [
-        'user_id', // Relacionamento com o usuário
+        'user_id',
         'imc',
         'peso_ideal_inferior',
         'peso_ideal_superior',
@@ -24,10 +25,14 @@ class Bioimpedance extends Model
         'bmr',
         'massa_muscular',
         'massa_ossea',
+        'grau_obesidade',
+        'impedancia_segmentos',
         'data_medicao',
     ];
 
-    // Define o relacionamento com o modelo User (um para muitos)
+    /**
+     * Relacionamento: Cada bioimpedância pertence a um usuário.
+     */
     public function user()
     {
         return $this->belongsTo(User::class);

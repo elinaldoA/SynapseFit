@@ -10,13 +10,13 @@ class CreateDietasTable extends Migration
     {
         Schema::create('dietas', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade'); // Relacionamento com a tabela 'users'
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->decimal('calorias', 8, 2);
             $table->decimal('proteinas', 8, 2);
             $table->decimal('carboidratos', 8, 2);
             $table->decimal('gorduras', 8, 2);
-            $table->text('suplementos');
-            $table->decimal('agua', 8, 2);
+            $table->decimal('agua', 8, 2)->nullable();
+            $table->text('suplementos')->nullable();
             $table->timestamps();
         });
     }
