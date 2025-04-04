@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Workout;
 use App\Models\WorkoutProgress;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;

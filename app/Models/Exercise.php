@@ -16,9 +16,6 @@ class Exercise extends Model
         'name', 'category', 'muscle_group'
     ];
 
-    /**
-     * Relacionamento com os Workouts (fichas de treino)
-     */
     public function workouts(): BelongsToMany
     {
         return $this->belongsToMany(Workout::class);

@@ -15,8 +15,9 @@ class CreateDietasTable extends Migration
             $table->decimal('proteinas', 8, 2);
             $table->decimal('carboidratos', 8, 2);
             $table->decimal('gorduras', 8, 2);
+            $table->decimal('fibras', 8, 2);
+            $table->decimal('sodio', 8, 2);
             $table->decimal('agua', 8, 2)->nullable();
-            $table->text('suplementos')->nullable();
             $table->timestamps();
         });
     }

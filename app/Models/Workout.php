@@ -15,17 +15,11 @@ class Workout extends Model
         'user_id', 'exercise_id', 'type', 'series', 'repeticoes', 'descanso', 'carga'
     ];
 
-    /**
-     * Relacionamento com o User
-     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    /**
-     * Relacionamento com o Exercise
-     */
     public function exercise(): BelongsTo
     {
         return $this->belongsTo(Exercise::class);

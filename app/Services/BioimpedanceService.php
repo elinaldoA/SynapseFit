@@ -91,10 +91,8 @@ class BioimpedanceService
         }
     }
 
-    // Função simplificada para calcular a impedância dos segmentos
     private function calcularImpedanciaSegmentos($massaMagra, $percentualGordura)
     {
-        // Exemplo simplificado de cálculo de impedância baseado na massa magra e percentual de gordura
         return (0.1 * $massaMagra) + (0.2 * $percentualGordura);
     }
 

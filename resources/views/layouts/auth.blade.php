@@ -18,7 +18,7 @@
     <link href="{{ asset('css/sb-admin-2.min.css') }}" rel="stylesheet">
 
     <!-- Favicon -->
-    <link href="{{ asset('img/favicon.png') }}" rel="icon" type="image/png">
+    <link rel="icon" href="{{ asset('img/favicon.ico')}}" type="image/x-icon">
 </head>
 <body class="bg-gradient-dark min-vh-100 d-flex justify-content-center align-items-center">
 

@@ -37,9 +37,9 @@ class WorkoutSeeder extends Seeder
     private function createWorkout($user, $type, $exercises)
     {
         foreach ($exercises as $exercise) {
-            $series = 3; // Séries fixas (sempre 3)
-            $repeticoes = 12; // Repetições fixas (sempre 12)
-            $descanso = 60; // Descanso fixo (sempre 60 segundos)
+            $series = 3;
+            $repeticoes = 12;
+            $descanso = 60;
             $carga = null;
 
             Workout::create([

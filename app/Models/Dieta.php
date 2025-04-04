@@ -15,11 +15,11 @@ class Dieta extends Model
         'proteinas',
         'carboidratos',
         'gorduras',
+        'fibras',
+        'sodio',
         'agua',
-        'suplementos',
     ];
 
-    // Relacionamento com o modelo User
     public function user()
     {
         return $this->belongsTo(User::class);

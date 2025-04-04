@@ -38,48 +38,53 @@ class ProfileController extends Controller
             'current_password' => 'nullable|required_with:new_password',
             'new_password' => 'nullable|min:8|max:12|required_with:current_password',
             'password_confirmation' => 'nullable|min:8|max:12|required_with:new_password|same:new_password',
-            'weight' => 'nullable|numeric|min:0',  // Validação para o peso
+            'weight' => 'nullable|numeric|min:0',
         ]);
 
         $user = User::findOrFail(Auth::user()->id);
+
+        $pesoAnterior = $user->weight;
+
         $user->name = $request->input('name');
         $user->last_name = $request->input('last_name');
         $user->email = $request->input('email');
+        $user->height = $request->input('height');
+        $user->sex = $request->input('sex');
+        $user->age = $request->input('age');
+        $user->objetivo = $request->input('objetivo');
 
         if (!is_null($request->input('current_password'))) {
             if (Hash::check($request->input('current_password'), $user->password)) {
-                $user->password = $request->input('new_password');
+                $user->password = Hash::make($request->input('new_password'));
             } else {
-                return redirect()->back()->withInput();
+                return redirect()->back()->withInput()->withErrors(['current_password' => 'Senha atual incorreta']);
             }
         }
 
-        // Atualizar o peso, se fornecido
-        if ($request->input('weight') !== null) {
-            $user->weight = $request->input('weight');
+        if ($request->filled('weight')) {
+            $novoPeso = $request->input('weight');
 
-            // Recalcular a bioimpedância
-            $bioimpedanceData = $this->bioimpedanceService->calcularBioimpedancia($user);
-            $existingBioimpedance = $user->bioimpedance()->first();
+            if ($pesoAnterior != $novoPeso) {
+                $user->weight = $novoPeso;
 
-            if ($existingBioimpedance) {
-                // Atualiza os dados de bioimpedância
-                $existingBioimpedance->update($bioimpedanceData);
-            } else {
-                // Caso não exista, cria um novo registro
-                $user->bioimpedance()->create($bioimpedanceData);
+                $bioimpedanceData = $this->bioimpedanceService->calcularBioimpedancia($user);
+                $existingBio = $user->bioimpedance()->first();
+                if ($existingBio) {
+                    $existingBio->update($bioimpedanceData);
+                }
+
+                if ($user->dieta()->exists()) {
+                    $this->dietaService->atualizarDieta($user);
+                }
+
+                if ($user->workouts()->exists()) {
+                    $this->treinoService->atualizarTreino($user);
+                }
             }
-
-            // Recalcular a dieta
-            $dieta = $this->dietaService->gerarDieta($user);
-            $user->dieta()->updateOrCreate([], $dieta); // Atualiza ou cria a dieta
-
-            // Recalcular os treinos
-            $this->treinoService->criarTreino($user);
         }
 
         $user->save();
 
-        return redirect()->route('profile')->withSuccess('Profile updated successfully.');
+        return redirect()->route('profile')->withSuccess('Perfil atualizado com sucesso.');
     }
 }

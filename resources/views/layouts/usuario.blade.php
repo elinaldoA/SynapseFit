@@ -65,11 +65,17 @@
             </a>
         </li>
 
-        <!-- Nav Item - About -->
         <li class="nav-item {{ Nav::isRoute('alimentacao') }}">
             <a class="nav-link" href="{{ route('alimentacao') }}">
-                <i class="fas fa-fw fa-list"></i>
+                <i class="fas fa-fw fa-utensils"></i>
                 <span>{{ __('Dietas') }}</span>
+            </a>
+        </li>
+
+        <li class="nav-item {{ Nav::isRoute('hidratacao') }}">
+            <a class="nav-link" href="{{ route('hidratacao') }}">
+                <i class="fas fa-glass-whiskey"></i>
+                <span>{{ __('Hidratação') }}</span>
             </a>
         </li>
 

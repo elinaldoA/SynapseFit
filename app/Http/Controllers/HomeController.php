@@ -18,7 +18,6 @@ class HomeController extends Controller
     {
         $user = auth()->user();
 
-        // Pegando a última medição de bioimpedância do usuário
         $bioimpedance = Bioimpedance::where('user_id', $user->id)
             ->orderByDesc('data_medicao')
             ->first();
@@ -39,7 +38,6 @@ class HomeController extends Controller
             $grauObesidade = $bioimpedance->grau_obesidade ?? 'Não disponível';
             $impedanciaSegmentos = $bioimpedance->impedancia_segmentos ?? 'Não disponível';
         } else {
-            // Se não houver medições, definir valores padrões
             $imc = $percentualGordura = $pesoIdealInferior = $pesoIdealSuperior = $massaMagra = $massaGordura =
             $aguaCorporal = $visceralFat = $idadeCorporal = $bmr = $massaMuscular = $massaOssea = null;
 

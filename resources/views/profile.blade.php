@@ -32,36 +32,13 @@
                     <figure class="rounded-circle avatar avatar font-weight-bold" style="font-size: 60px; height: 180px; width: 180px;" data-initial="{{ Auth::user()->name[0] }}"></figure>
                 </div>
                 <div class="card-body">
-
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="text-center">
                                 <h5 class="font-weight-bold">{{  Auth::user()->fullName }}</h5>
-                                <!--<p>Administrator</p>-->
                             </div>
                         </div>
                     </div>
-
-                    <!--<div class="row">
-                        <div class="col-md-4">
-                            <div class="card-profile-stats">
-                                <span class="heading">22</span>
-                                <span class="description">Friends</span>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="card-profile-stats">
-                                <span class="heading">10</span>
-                                <span class="description">Photos</span>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="card-profile-stats">
-                                <span class="heading">89</span>
-                                <span class="description">Comments</span>
-                            </div>
-                        </div>
-                    </div>-->
                 </div>
             </div>
 
@@ -78,9 +55,8 @@
                 <div class="card-body">
 
                     <form method="POST" action="{{ route('profile.update') }}" autocomplete="off">
-                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-
-                        <input type="hidden" name="_method" value="PUT">
+                        @csrf
+                        @method('PUT')
 
                         <h6 class="heading-small text-muted mb-4">Informações do usuário</h6>
 
@@ -101,16 +77,57 @@
                             </div>
 
                             <div class="row">
-                                <div class="col-lg-6">
+                                <div class="col-lg-12">
                                     <div class="form-group">
                                         <label class="form-control-label" for="email">Email<span class="small text-danger">*</span></label>
                                         <input type="email" id="email" class="form-control" name="email" placeholder="example@example.com" value="{{ old('email', Auth::user()->email) }}">
                                     </div>
                                 </div>
+                            </div>
+
+                            <div class="row">
                                 <div class="col-lg-6">
                                     <div class="form-group">
-                                        <label class="form-control-label" for="weight">Peso<span class="small text-danger">*</span></label>
+                                        <label class="form-control-label" for="height">Altura (cm)</label>
+                                        <input type="number" id="height" class="form-control" name="height" placeholder="Altura" value="{{ old('height', Auth::user()->height) }}" step="0.01" min="0">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="form-control-label" for="weight">Peso (kg)</label>
                                         <input type="number" id="weight" class="form-control" name="weight" placeholder="Peso" value="{{ old('weight', Auth::user()->weight) }}" step="0.1" min="0">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="form-control-label" for="sex">Sexo</label>
+                                        <select name="sex" id="sex" class="form-control">
+                                            <option value="male" {{ old('sex', Auth::user()->sex) == 'male' ? 'selected' : '' }}>Masculino</option>
+                                            <option value="female" {{ old('sex', Auth::user()->sex) == 'female' ? 'selected' : '' }}>Feminino</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="form-control-label" for="age">Idade</label>
+                                        <input type="number" id="age" class="form-control" name="age" placeholder="Idade" value="{{ old('age', Auth::user()->age) }}" min="18">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="form-control-label" for="objetivo">Objetivo</label>
+                                        <select name="objetivo" id="objetivo" class="form-control">
+                                            <option value="hipertrofia" {{ old('objetivo', Auth::user()->objetivo) == 'hipertrofia' ? 'selected' : '' }}>Hipertrofia</option>
+                                            <option value="emagrecimento" {{ old('objetivo', Auth::user()->objetivo) == 'emagrecimento' ? 'selected' : '' }}>Emagrecimento</option>
+                                            <option value="resistencia" {{ old('objetivo', Auth::user()->objetivo) == 'resistencia' ? 'selected' : '' }}>Resistência</option>
+                                        </select>
                                     </div>
                                 </div>
                             </div>

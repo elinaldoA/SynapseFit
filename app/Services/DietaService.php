@@ -2,36 +2,32 @@
 
 namespace App\Services;
 
-use App\Models\Alimentacao;
 use App\Models\User;
 
 class DietaService
 {
     public function validarDieta(User $user, $alimentacoes)
     {
-        // Calcular as metas da dieta para o usuário
         $dieta = $this->gerarDieta($user);
 
-        // Inicializar os totais consumidos
         $totalCalorias = 0;
         $totalProteinas = 0;
         $totalCarboidratos = 0;
         $totalGorduras = 0;
-        $totalAgua = 0;
+        $totalFibras = 0;
+        $totalSodio = 0;
 
-        // Loop através dos alimentos consumidos
         foreach ($alimentacoes as $alimentacao) {
             $totalCalorias += $alimentacao['calorias'];
             $totalProteinas += $alimentacao['proteinas'];
             $totalCarboidratos += $alimentacao['carboidratos'];
             $totalGorduras += $alimentacao['gorduras'];
-            $totalAgua += $alimentacao['agua'];
+            $totalFibras += $alimentacao['fibras'];
+            $totalSodio += $alimentacao['sodio'];
         }
 
-        // Inicializar o array de mensagens de erro
         $mensagensDeErro = [];
 
-        // Verificar se os limites da dieta foram ultrapassados
         if ($totalCalorias > $dieta['calorias']) {
             $mensagensDeErro[] = 'Limite de calorias excedido!';
         }
@@ -44,34 +40,33 @@ class DietaService
         if ($totalGorduras > $dieta['gorduras']) {
             $mensagensDeErro[] = 'Limite de gorduras excedido!';
         }
-        if ($totalAgua > $dieta['agua']) {
-            $mensagensDeErro[] = 'Limite de água excedido!';
+        if ($totalFibras > $dieta['fibras']) {
+            $mensagensDeErro[] = 'Limite de fibras excedido!';
+        }
+        if ($totalSodio > $dieta['sodio']) {
+            $mensagensDeErro[] = 'Limite de sódio excedido!';
         }
 
-        // Retorna as mensagens de erro, se houver
-        if (count($mensagensDeErro) > 0) {
-            return $mensagensDeErro;
-        }
-
-        return ['Dieta dentro dos limites.'];
+        return count($mensagensDeErro) > 0 ? $mensagensDeErro : ['Dieta dentro dos limites.'];
     }
-
 
     public function gerarDieta(User $user)
     {
-        // Calcula as metas da dieta com base nos dados do usuário
         $calorias = $this->calcularCalorias($user);
         $proteinas = round($calorias * 0.3 / 4);
         $carboidratos = round($calorias * 0.4 / 4);
         $gorduras = round($calorias * 0.3 / 9);
 
-        if ($user->objetivo == 'hipertrofia') {
-            $agua = round($user->weight * 0.04, 2);  // 40 ml por kg para hipertrofia
-        } elseif ($user->objetivo == 'emagrecimento') {
-            $agua = round($user->weight * 0.03, 2);  // 30 ml por kg para emagrecimento
+        if ($user->objetivo === 'hipertrofia') {
+            $agua = round($user->weight * 0.04, 2);
+        } elseif ($user->objetivo === 'emagrecimento') {
+            $agua = round($user->weight * 0.03, 2);
         } else {
-            $agua = round($user->weight * 0.035, 2);  // 35 ml por kg para manutenção
+            $agua = round($user->weight * 0.035, 2);
         }
+
+        $fibras = $user->sex === 'male' ? 35 : 25;
+        $sodio = 2300;
 
         return [
             'calorias' => $calorias,
@@ -79,14 +74,23 @@ class DietaService
             'carboidratos' => $carboidratos,
             'gorduras' => $gorduras,
             'agua' => $agua,
+            'fibras' => $fibras,
+            'sodio' => $sodio,
         ];
+    }
+
+    public function atualizarDieta(User $user)
+    {
+        $dieta = $this->gerarDieta($user);
+        $user->dieta()->update($dieta);
     }
 
     private function calcularCalorias(User $user)
     {
-        if ($user->sex == 'male') {
-            return round(10 * $user->weight + 6.25 * $user->height * 100 - 5 * $user->age + 5 * 1.55);
+        if ($user->sex === 'male') {
+            return round((10 * $user->weight) + (6.25 * $user->height * 100) - (5 * $user->age) + 5 * 1.55);
         }
-        return round(10 * $user->weight + 6.25 * $user->height * 100 - 5 * $user->age - 161 * 1.55);
+
+        return round((10 * $user->weight) + (6.25 * $user->height * 100) - (5 * $user->age) - 161 * 1.55);
     }
 }

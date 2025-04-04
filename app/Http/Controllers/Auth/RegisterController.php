@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use App\Services\BioimpedanceService;
 use App\Services\DietaService;
@@ -21,11 +20,6 @@ class RegisterController extends Controller
 
     use RegistersUsers;
 
-    /**
-     * Where to redirect users after registration.
-     *
-     * @var string
-     */
     protected $redirectTo = RouteServiceProvider::HOME;
 
     public function __construct(BioimpedanceService $bioimpedanceService, DietaService $dietaService, TreinoService $treinoService)
@@ -53,7 +47,6 @@ class RegisterController extends Controller
 
     protected function create(array $data)
     {
-        // Criando o usuário
         $user = User::create([
             'name' => $data['name'],
             'last_name' => $data['last_name'],
@@ -67,30 +60,22 @@ class RegisterController extends Controller
             'role' => 'aluno',
         ]);
 
-        // Calcular bioimpedância
         $bioimpedanceData = $this->bioimpedanceService->calcularBioimpedancia($user);
 
-        // Verifica se já existe um registro de bioimpedância para o usuário
         $existingBioimpedance = $user->bioimpedance()->first();
 
         if ($existingBioimpedance) {
-            // Se já existe, atualiza os dados
             $existingBioimpedance->update($bioimpedanceData);
         } else {
-            // Caso não exista, cria um novo registro
             $user->bioimpedance()->create($bioimpedanceData);
         }
 
-        // Gerar a dieta
         $dieta = $this->dietaService->gerarDieta($user);
 
-        // Salvar a dieta
         $user->dieta()->create($dieta);
 
-        // Criar o treino para o usuário
         $this->treinoService->criarTreino($user);
 
-        //Boas vindas
         $user->notify(new WelcomeNotification());
 
         return $user;
