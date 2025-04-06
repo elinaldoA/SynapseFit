@@ -3,9 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
 
 class AdminUserSeeder extends Seeder
 {
@@ -14,17 +12,21 @@ class AdminUserSeeder extends Seeder
      */
     public function run(): void
     {
-        User::create([
+        $data = [
             'name' => 'Admin',
             'last_name' => 'Master',
-            'email' => 'admin@snapsefit.com.br',
-            'password' => Hash::make('admin'),
-            'height' => '170',
-            'weight' => '87',
+            'password' => bcrypt('admin'),
+            'height' => 170,
+            'weight' => 87,
             'sex' => 'male',
-            'age' => '30',
+            'age' => 30,
             'objetivo' => 'hipertrofia',
             'role' => 'admin'
-        ]);
+        ];
+
+        User::updateOrCreate(
+            ['email' => 'admin@synapsefit.com.br'], // critério de identificação
+            $data
+        );
     }
 }

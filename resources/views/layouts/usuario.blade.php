@@ -39,63 +39,80 @@
             <div class="sidebar-brand-text mx-3">Synapse <sup>Fit</sup></div>
         </a>
 
-        <!-- Divider -->
         <hr class="sidebar-divider my-0">
 
-        <!-- Nav Item - Dashboard -->
         <li class="nav-item {{ Nav::isRoute('home') }}">
             <a class="nav-link" href="{{ route('home') }}">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
-                <span>{{ __('Dashboard') }}</span></a>
+                <span>{{ __('Dashboard') }}</span>
+            </a>
         </li>
 
-        <!-- Divider -->
         <hr class="sidebar-divider">
 
-        <!-- Heading -->
-        <div class="sidebar-heading">
-            {{ __('Settings') }}
-        </div>
+        @if(Auth::user()->role === 'aluno')
+            <!-- Menu para USUÁRIO -->
+            <div class="sidebar-heading">
+                {{ __('Minha Conta') }}
+            </div>
 
-        <!-- Nav Item - Profile -->
-        <li class="nav-item {{ Nav::isRoute('profile') }}">
-            <a class="nav-link" href="{{ route('profile') }}">
-                <i class="fas fa-fw fa-user"></i>
-                <span>{{ __('Perfil') }}</span>
-            </a>
-        </li>
+            <li class="nav-item {{ Nav::isRoute('profile') }}">
+                <a class="nav-link" href="{{ route('profile') }}">
+                    <i class="fas fa-fw fa-user"></i>
+                    <span>{{ __('Perfil') }}</span>
+                </a>
+            </li>
 
-        <li class="nav-item {{ Nav::isRoute('alimentacao') }}">
-            <a class="nav-link" href="{{ route('alimentacao') }}">
-                <i class="fas fa-fw fa-utensils"></i>
-                <span>{{ __('Dietas') }}</span>
-            </a>
-        </li>
+            <li class="nav-item {{ Nav::isRoute('alimentacao') }}">
+                <a class="nav-link" href="{{ route('alimentacao') }}">
+                    <i class="fas fa-fw fa-utensils"></i>
+                    <span>{{ __('Dietas') }}</span>
+                </a>
+            </li>
 
-        <li class="nav-item {{ Nav::isRoute('hidratacao') }}">
-            <a class="nav-link" href="{{ route('hidratacao') }}">
-                <i class="fas fa-glass-whiskey"></i>
-                <span>{{ __('Hidratação') }}</span>
-            </a>
-        </li>
+            <li class="nav-item {{ Nav::isRoute('hidratacao') }}">
+                <a class="nav-link" href="{{ route('hidratacao') }}">
+                    <i class="fas fa-glass-whiskey"></i>
+                    <span>{{ __('Hidratação') }}</span>
+                </a>
+            </li>
 
-        <!-- Nav Item - About -->
-        <li class="nav-item {{ Nav::isRoute('treinos') }}">
-            <a class="nav-link" href="{{ route('workouts') }}">
-                <i class="fas fa-fw fa-list"></i>
-                <span>{{ __('Treinos') }}</span>
-            </a>
-        </li>
+            <li class="nav-item {{ Nav::isRoute('workouts') }}">
+                <a class="nav-link" href="{{ route('workouts') }}">
+                    <i class="fas fa-fw fa-list"></i>
+                    <span>{{ __('Treinos') }}</span>
+                </a>
+            </li>
 
-        <!-- Divider -->
+        @elseif(Auth::user()->role === 'admin')
+            <!-- Menu para ADMINISTRADOR -->
+            <div class="sidebar-heading">
+                {{ __('Administração') }}
+            </div>
+
+            <li class="nav-item {{ Nav::isRoute('admin.users') }}">
+                <a class="nav-link" href="#">
+                    <i class="fas fa-fw fa-users"></i>
+                    <span>{{ __('Usuários') }}</span>
+                </a>
+            </li>
+
+            <li class="nav-item {{ Nav::isRoute('admin.reports') }}">
+                <a class="nav-link" href="#">
+                    <i class="fas fa-fw fa-chart-bar"></i>
+                    <span>{{ __('Relatórios') }}</span>
+                </a>
+            </li>
+        @endif
+
         <hr class="sidebar-divider d-none d-md-block">
 
-        <!-- Sidebar Toggler (Sidebar) -->
         <div class="text-center d-none d-md-inline">
             <button class="rounded-circle border-0" id="sidebarToggle"></button>
         </div>
 
     </ul>
+
     <!-- End of Sidebar -->
 
     <!-- Content Wrapper -->

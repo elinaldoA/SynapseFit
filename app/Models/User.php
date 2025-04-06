@@ -32,7 +32,6 @@ class User extends Authenticatable
 
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'trial_ends_at' => 'datetime',
     ];
 
     public function bioimpedance()
@@ -77,14 +76,4 @@ class User extends Authenticatable
     {
         return $this->role === 'aluno';
     }
-    public function emPeriodoDeTeste()
-    {
-        return $this->plano === 'gratuito' && now()->lt($this->trial_ends_at);
-    }
-
-    public function podeAcessarRecursosPremium()
-    {
-        return $this->plano !== 'gratuito' && now()->gte($this->trial_ends_at);
-    }
-
 }

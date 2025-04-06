@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Bioimpedance;
+use App\Models\ConsumoAgua;
+use App\Models\Dieta;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -17,6 +19,20 @@ class HomeController extends Controller
     public function index()
     {
         $user = auth()->user();
+
+        $users = User::count();
+        $bioimpedancias = Bioimpedance::count();
+        $dietas = Dieta::count();
+
+        $totalMl = ConsumoAgua::sum('quantidade');
+        $totalLitros = round($totalMl / 1000, 2);
+
+        $widget = [
+            'users' => User::count(),
+            'bioimpedancias' => Bioimpedance::count(),
+            'dietas' => Dieta::count(),
+            'aguaLitros' => $totalLitros,
+        ];
 
         $bioimpedance = Bioimpedance::where('user_id', $user->id)
             ->orderByDesc('data_medicao')
@@ -59,7 +75,8 @@ class HomeController extends Controller
             'massaMuscular',
             'massaOssea',
             'grauObesidade',
-            'impedanciaSegmentos'
+            'impedanciaSegmentos',
+            'widget'
         ));
     }
 }
