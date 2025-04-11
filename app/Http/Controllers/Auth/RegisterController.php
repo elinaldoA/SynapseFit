@@ -3,14 +3,17 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Plan;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
+use App\Models\UserSubscription;
 use Illuminate\Support\Facades\Validator;
 use App\Services\BioimpedanceService;
 use App\Services\DietaService;
 use App\Services\TreinoService;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use App\Notifications\WelcomeNotification;
+use Carbon\Carbon;
 
 class RegisterController extends Controller
 {
@@ -44,7 +47,6 @@ class RegisterController extends Controller
             'objetivo' => ['required', 'in:hipertrofia,emagrecimento,resistencia'],
         ]);
     }
-
     protected function create(array $data)
     {
         $user = User::create([
@@ -59,6 +61,19 @@ class RegisterController extends Controller
             'objetivo' => $data['objetivo'],
             'role' => 'aluno',
         ]);
+
+        // 🆓 Busca o plano "Free Trial" (criado via seeder)
+        $freePlan = Plan::where('name', 'Free Trial')->first();
+
+        if ($freePlan) {
+            UserSubscription::create([
+                'user_id' => $user->id,
+                'plan_id' => $freePlan->id,
+                'start_date' => Carbon::now(),
+                'end_date' => Carbon::now()->addDays($freePlan->duration_in_days),
+                'is_active' => true,
+            ]);
+        }
 
         $bioimpedanceData = $this->bioimpedanceService->calcularBioimpedancia($user);
 

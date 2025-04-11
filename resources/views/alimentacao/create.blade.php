@@ -1,4 +1,4 @@
-@extends('layouts.usuario')
+@extends('layouts.admin')
 
 @section('main-content')
     <h1 class="h3 mb-4 text-gray-800">{{ __('Adicionar Alimento') }}</h1>
@@ -72,11 +72,6 @@
                 <div class="form-group">
                     <label for="gorduras">Gorduras (g)</label>
                     <input type="number" step="0.01" name="gorduras" class="form-control" value="{{ old('gorduras') }}" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="agua">Água (ml)</label>
-                    <input type="number" step="0.01" name="agua" class="form-control" value="{{ old('agua') }}">
                 </div>
 
                 <div class="form-group">

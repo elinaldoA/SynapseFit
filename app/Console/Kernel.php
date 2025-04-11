@@ -21,7 +21,24 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        // $schedule->command('inspire')->hourly();
+        // Agendamento das notificações das refeições
+        $schedule->command('notificar:refeicao --tipo=cafe')->dailyAt('08:00');
+        $schedule->command('notificar:refeicao --tipo=almoco')->dailyAt('12:40');
+        $schedule->command('notificar:refeicao --tipo=lanche')->dailyAt('15:00');
+        $schedule->command('notificar:refeicao --tipo=jantar')->dailyAt('20:00');
+
+        // Agendamento das notificações de consumo de água com intervalos razoáveis
+        $schedule->command('notificar:consumo-agua')->dailyAt('08:00');
+        $schedule->command('notificar:consumo-agua')->dailyAt('10:00');
+        $schedule->command('notificar:consumo-agua')->dailyAt('12:00');
+        $schedule->command('notificar:consumo-agua')->dailyAt('14:00');
+        $schedule->command('notificar:consumo-agua')->dailyAt('16:00');
+        $schedule->command('notificar:consumo-agua')->dailyAt('18:00');
+        $schedule->command('notificar:consumo-agua')->dailyAt('20:00');
+        $schedule->command('notificar:consumo-agua')->dailyAt('22:00');
+
+        // Atualiza Treino e Dieta
+        $schedule->command('atualizar:treino-dieta')->daily();
     }
 
     /**

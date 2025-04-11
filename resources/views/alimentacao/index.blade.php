@@ -1,7 +1,7 @@
-@extends('layouts.usuario')
+@extends('layouts.admin')
 
 @section('main-content')
-    <h1 class="h3 mb-4 text-gray-800">{{ __('Meus Alimentos Consumidos') }}</h1>
+    <h1 class="h3 mb-4 text-gray-800 text-center">{{ __('Meus Alimentos Consumidos') }}</h1>
 
     @if (session('success'))
         <div class="alert alert-success border-left-success alert-dismissible fade show" role="alert">
@@ -22,16 +22,22 @@
         </div>
     @endif
 
-    <!-- Exibição das métricas da dieta em cards -->
+    <!-- Exibição das métricas da dieta com gráficos -->
     <div class="row mb-4">
         @foreach(['calorias', 'proteinas', 'carboidratos', 'gorduras', 'fibras', 'sodio'] as $tipo)
             @php
+                // Atribuindo valores baseados no tipo de nutriente
                 $consumido = $consumidos[$tipo] ?? 0;
                 $meta = $metas[$tipo] ?? 1;
                 $restante = max(0, $meta - $consumido);
                 $progresso = $meta > 0 ? ($consumido / $meta) : 0;
+
+                // Ajuste para definir o status visual
                 $statusClass = $progresso > 1 ? 'bg-danger' : ($progresso > 0.9 ? 'bg-warning' : 'bg-success');
-                $unidade = 'g';
+
+                // Determinando as unidades de acordo com o tipo de nutriente
+                // Se o tipo for sódio, usamos 'mg', para os outros 'g'
+                $unidade = ($tipo === 'sodio') ? 'mg' : 'g';
             @endphp
 
             <div class="col-12 col-md-6 col-lg-4 mb-3">
@@ -39,8 +45,8 @@
                     <div class="card-body">
                         <h5 class="card-title text-white">{{ ucfirst($tipo) }}</h5>
                         <p class="card-text">
-                            Consumido: {{ number_format($consumido, 2) }} / {{ number_format($meta, 2) }} {{ $unidade }}<br>
-                            Restante: {{ number_format($restante, 2) }} {{ $unidade }}
+                            <i class="fas fa-utensils"></i> Consumido: {{ number_format($consumido, 2) }} / {{ number_format($meta, 2) }} {{ $unidade }}<br>
+                            <i class="fas fa-hourglass-end"></i> Restante: {{ number_format($restante, 2) }} {{ $unidade }}
                         </p>
 
                         <div class="progress bg-white">
@@ -60,6 +66,7 @@
         </div>
     @endif
 
+    <!-- Card com tabela de alimentos consumidos -->
     <div class="card mt-3 mb-4 border-light shadow">
         <div class="card-header d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-2">
             <span>Alimentos Consumidos</span>
@@ -84,7 +91,6 @@
                             <th>Gorduras</th>
                             <th>Fibras</th>
                             <th>Sódio</th>
-                            <th>Água (ml)</th>
                             <th class="text-center">Ações</th>
                         </tr>
                     </thead>
@@ -99,8 +105,7 @@
                                 <td>{{ $alimentacao->carboidratos }}</td>
                                 <td>{{ $alimentacao->gorduras }}</td>
                                 <td>{{ $alimentacao->fibras }}</td>
-                                <td>{{ $alimentacao->sodio }}</td>
-                                <td>{{ $alimentacao->agua ?? '-' }}</td>
+                                <td>{{ $alimentacao->sodio }} mg</td> <!-- Exibindo a unidade "mg" para sódio -->
                                 <td class="text-center">
                                     <a href="{{ route('alimentacao.edit', $alimentacao->id) }}" class="btn btn-warning btn-sm mb-1">Editar</a>
                                     <form action="{{ route('alimentacao.destroy', $alimentacao->id) }}" method="POST" class="d-inline-block">

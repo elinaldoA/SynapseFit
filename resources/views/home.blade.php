@@ -1,4 +1,4 @@
-@extends('layouts.usuario')
+@extends('layouts.admin')
 
 @section('main-content')
 
@@ -74,7 +74,7 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">{{ __('Consumo de água') }}</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $widget['aguaLitros'] }}</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $widget['aguaLitros'] }} Litros</div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-tint fa-2x text-gray-300"></i>
@@ -86,7 +86,6 @@
     </div>
     @else
         <div class="row">
-            <!-- Corpo Humano Card -->
             <div class="col-xl-6 col-md-12 mb-4">
                 <div class="card shadow h-100 py-2">
                     <div class="card-body text-center">
@@ -97,12 +96,10 @@
                 </div>
             </div>
 
-            <!-- Gráfico ao lado da imagem -->
             <div class="col-xl-6 col-md-12 mb-4">
                 <div class="card shadow h-100 py-2">
                     <div class="card-body">
                         <h5 class="card-title text-center">Gráfico de Bioimpedância</h5>
-                        <!-- Gráfico -->
                         <div id="grafico-bioimpedancia">
                             <canvas id="bioimpedanceChart"></canvas>
                         </div>
@@ -110,6 +107,18 @@
                 </div>
             </div>
         </div>
+        @if ($assinaturaAtiva)
+            @if ($diasRestantes >= 0)
+                <div class="alert alert-info">
+                    Seu plano expira em <strong>{{ $diasRestantes }}</strong> dia{{ $diasRestantes != 1 ? 's' : '' }}.
+                </div>
+            @else
+                <div class="alert alert-warning">
+                    Seu plano expirou há <strong>{{ abs($diasRestantes) }}</strong> dia{{ abs($diasRestantes) != 1 ? 's' : '' }}.
+                </div>
+            @endif
+        @endif
+
 
         <div class="row">
             <!-- Altura Card -->

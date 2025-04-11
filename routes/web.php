@@ -1,12 +1,17 @@
 <?php
 
 use App\Http\Controllers\AlimentacaoController;
+use App\Http\Controllers\ChatController;
+use App\Http\Controllers\ChatIAController;
+use App\Http\Controllers\FinanceiroController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WorkoutController;
 use App\Http\Controllers\HidratacaoController;
+use App\Http\Controllers\PlanoController;
+use App\Http\Controllers\UserController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -16,8 +21,16 @@ Auth::routes();
 
 // ROTAS AUTENTICADAS
 Route::middleware(['auth'])->group(function () {
-    Route::get('/home', [HomeController::class, 'index'])->name('home');
+    Route::get('/planos', [PlanoController::class, 'index'])->name('planos.index');
+    Route::post('/planos/{plan}/assinar', [PlanoController::class, 'assinar'])->name('planos.assinar');
+    Route::get('/planos/sucesso', [PlanoController::class, 'sucesso'])->name('planos.sucesso');
+    Route::get('/planos/upgrade', [PlanoController::class, 'upgrade'])->name('planos.upgrade');
+    Route::get('/chat', [ChatController::class, 'index'])->name('chat.index');
+    Route::post('/chat/enviar', [ChatController::class, 'enviar'])->name('chat.enviar');
+});
 
+Route::middleware(['auth', 'check.subscription'])->group(function () {
+    Route::get('/home', [HomeController::class, 'index'])->name('home');
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
 
@@ -42,4 +55,26 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/hidratacao/{hidratacao}/edit', [HidratacaoController::class, 'edit'])->name('hidratacao.edit');
     Route::put('/hidratacao/{hidratacao}', [HidratacaoController::class, 'update'])->name('hidratacao.update');
     Route::delete('/hidratacao/{hidratacao}', [HidratacaoController::class, 'destroy'])->name('hidratacao.destroy');
+
+    //LISTAGEM DE USUÁRIOS
+    Route::get('/administrador/usuarios/index', [UserController::class, 'index'])->name('usuarios');
+    Route::get('/administrador/usuarios/create', [UserController::class, 'create'])->name('usuarios.create');
+    Route::post('/administrador/usuarios', [UserController::class, 'store'])->name('usuarios.store');
+    Route::get('/administrador/usuarios/{usuario}/edit', [UserController::class, 'edit'])->name('usuarios.edit');
+    Route::put('/administrador/usuarios/{usuario}', [UserController::class, 'update'])->name('usuarios.update');
+    Route::delete('/administrador/usuarios/{usuario}', [UserController::class, 'destroy'])->name('usuarios.destroy');
+    //FINANCEIRO
+    Route::get('/administrador/financeiro', [FinanceiroController::class, 'index'])->name('financeiro');
+
+    Route::get('/notifications/mark-as-read/{id}', function ($id) {
+        $notification = auth()->user()->unreadNotifications->find($id);
+        if ($notification) {
+            $notification->markAsRead();
+        }
+        return redirect()->back();
+    })->name('notifications.read');
+    Route::get('/notifications/mark-all-as-read', function () {
+        auth()->user()->unreadNotifications->markAsRead();
+        return redirect()->back();
+    })->name('notifications.read.all');
 });

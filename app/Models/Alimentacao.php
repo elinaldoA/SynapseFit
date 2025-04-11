@@ -13,7 +13,7 @@ class Alimentacao extends Model
 
     protected $fillable = [
         'user_id',
-        'refeicao', // café, almoço, lanche, jantar
+        'refeicao',
         'calorias',
         'proteinas',
         'carboidratos',
@@ -21,7 +21,7 @@ class Alimentacao extends Model
         'agua',
         'fibras',
         'sodio',
-        'descricao', // opcional: para descrever o que foi comido
+        'descricao',
         'data',
     ];
 

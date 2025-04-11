@@ -13,7 +13,9 @@ class WorkoutProgress extends Model {
         'workout_id',
         'series_completed',
         'carga',
-        'status'
+        'status',
+        'data_treino',
+        'type',
     ];
 
     public function user() {

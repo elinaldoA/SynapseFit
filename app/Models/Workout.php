@@ -12,7 +12,13 @@ class Workout extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id', 'exercise_id', 'type', 'series', 'repeticoes', 'descanso', 'carga'
+        'user_id',
+        'exercise_id',
+        'type',
+        'series',
+        'repeticoes',
+        'descanso',
+        'carga',
     ];
 
     public function user(): BelongsTo

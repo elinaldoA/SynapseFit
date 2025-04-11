@@ -17,6 +17,7 @@ class CreateWorkoutsTable extends Migration
             $table->integer('repeticoes')->default(10);
             $table->integer('descanso')->default(60);
             $table->decimal('carga', 8, 2)->nullable();
+            $table->date('data_treino')->nullable();
             $table->timestamps();
         });
     }

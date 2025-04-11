@@ -16,32 +16,38 @@ class AlimentacaoController extends Controller
         $this->dietaService = $dietaService;
      }
 
-    public function index()
-    {
-        $alimentacoes = Alimentacao::where('user_id', auth()->user()->id)->get();
-        $dieta = $this->dietaService->gerarDieta(auth()->user());
-        $validacaoDieta = $this->dietaService->validarDieta(auth()->user(), $alimentacoes);
+     public function index()
+     {
+         $user = auth()->user();
 
-        $consumidos = [
-            'calorias' => $alimentacoes->sum('calorias'),
-            'proteinas' => $alimentacoes->sum('proteinas'),
-            'carboidratos' => $alimentacoes->sum('carboidratos'),
-            'gorduras' => $alimentacoes->sum('gorduras'),
-            'agua' => $alimentacoes->sum('agua'),
-            'fibras' => $alimentacoes->sum('fibras'),
-            'sodio' => $alimentacoes->sum('sodio'),
-        ];
+         $alimentacoes = Alimentacao::where('user_id', $user->id)
+             ->whereDate('data', \Carbon\Carbon::today())
+             ->get();
 
-        $metas = [
-            'calorias' => $dieta['calorias'] ?? 0,
-            'proteinas' => $dieta['proteinas'] ?? 0,
-            'carboidratos' => $dieta['carboidratos'] ?? 0,
-            'gorduras' => $dieta['gorduras'] ?? 0,
-            'agua' => $dieta['agua'] ?? 0,
-        ];
+         $dieta = $this->dietaService->gerarDieta($user);
+         $validacaoDieta = $this->dietaService->validarDieta($user, $alimentacoes);
 
-        return view('alimentacao.index', compact('alimentacoes', 'dieta', 'validacaoDieta', 'consumidos', 'metas'));
-    }
+         $consumidos = [
+             'calorias' => $alimentacoes->sum('calorias'),
+             'proteinas' => $alimentacoes->sum('proteinas'),
+             'carboidratos' => $alimentacoes->sum('carboidratos'),
+             'gorduras' => $alimentacoes->sum('gorduras'),
+             'agua' => $alimentacoes->sum('agua'),
+             'fibras' => $alimentacoes->sum('fibras'),
+             'sodio' => $alimentacoes->sum('sodio'),
+         ];
+
+         $metas = [
+             'calorias' => $dieta['calorias'] ?? 0,
+             'proteinas' => $dieta['proteinas'] ?? 0,
+             'carboidratos' => $dieta['carboidratos'] ?? 0,
+             'gorduras' => $dieta['gorduras'] ?? 0,
+             'agua' => $dieta['agua'] ?? 0,
+         ];
+
+         return view('alimentacao.index', compact('alimentacoes', 'dieta', 'validacaoDieta', 'consumidos', 'metas'));
+     }
+
 
     public function create()
     {

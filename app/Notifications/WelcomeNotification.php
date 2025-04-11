@@ -3,7 +3,6 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Messages\MailMessage;
 
@@ -13,22 +12,25 @@ class WelcomeNotification extends Notification
 
     public function __construct()
     {
-        // Você pode passar parâmetros ao construtor, se necessário
+        // Pode receber dados aqui se precisar
     }
 
     public function via($notifiable)
     {
-        return ['mail'];
+        return ['database','mail'];
     }
 
     public function toMail($notifiable)
     {
         return (new MailMessage)
             ->subject('Bem-vindo ao SynapseFit!')
-            ->greeting('Olá ' . $notifiable->name)
-            ->line('Estamos felizes em tê-lo conosco.')
-            ->action('Acessar o Sistema', url('/'))
-            ->line('Obrigado por se registrar!')
-            ->salutation('Atenciosamente, equipe SynapseFit.');
+            ->view('emails.welcome', ['user' => $notifiable]);
+    }
+    public function toDatabase($notifiable)
+    {
+        return [
+            'message' => 'Bem-vindo ao SynapseFit, ' . $notifiable->name . '!',
+            'user_id' => $notifiable->id,
+        ];
     }
 }

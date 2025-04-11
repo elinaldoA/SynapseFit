@@ -1,0 +1,22 @@
+[2025-04-11 15:34:36] local.INFO: CheckSubscription {"user_id":1,"now":"2025-04-11 15:34:36","has_valid_subscription":true} 
+[2025-04-11 15:38:00] local.INFO: Usuário 1: 0ml / 3480ml  
+[2025-04-11 15:38:00] local.INFO: Enviando notificação para usuário 1  
+[2025-04-11 15:46:58] local.INFO: CheckSubscription {"user_id":1,"now":"2025-04-11 15:46:58","has_valid_subscription":true} 
+[2025-04-11 15:48:01] local.INFO: Usuário 1: 0ml / 3480ml  
+[2025-04-11 15:48:01] local.INFO: Enviando notificação para usuário 1  
+[2025-04-11 15:49:00] local.INFO: Usuário 1: 0ml / 3480ml  
+[2025-04-11 15:49:00] local.INFO: Enviando notificação para usuário 1  
+[2025-04-11 15:50:00] local.INFO: Usuário 1: 0ml / 3480ml  
+[2025-04-11 15:50:00] local.INFO: Enviando notificação para usuário 1  
+[2025-04-11 15:51:00] local.INFO: Usuário 1: 0ml / 3480ml  
+[2025-04-11 15:51:00] local.INFO: Enviando notificação para usuário 1  
+[2025-04-11 15:52:49] local.INFO: CheckSubscription {"user_id":1,"now":"2025-04-11 15:52:49","has_valid_subscription":true} 
+[2025-04-11 15:52:54] local.INFO: CheckSubscription {"user_id":1,"now":"2025-04-11 15:52:54","has_valid_subscription":true} 
+[2025-04-11 16:00:00] local.INFO: Usuário 1: 0ml / 3480ml  
+[2025-04-11 16:00:00] local.INFO: Enviando notificação para usuário 1  
+[2025-04-11 16:19:39] local.DEBUG: [PlanoController] Usuário 1 iniciou assinatura do plano 'Trimestral'.  
+[2025-04-11 16:19:40] local.DEBUG: [MercadoPagoService] Preferência criada. {"preference_id":"188514374-259c0439-9edc-4bf9-a02b-90e68a7b04ab","init_point":"https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=188514374-259c0439-9edc-4bf9-a02b-90e68a7b04ab"} 
+[2025-04-11 16:19:40] local.INFO: [PlanoController] Preferência criada com sucesso para o usuário 1. Redirecionando para Mercado Pago...  
+[2025-04-11 16:19:51] local.DEBUG: [PlanoController] Usuário 1 iniciou assinatura do plano 'Anual'.  
+[2025-04-11 16:19:52] local.DEBUG: [MercadoPagoService] Preferência criada. {"preference_id":"188514374-7fd27e01-f8c3-461c-ba1d-2a106ed51cf5","init_point":"https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=188514374-7fd27e01-f8c3-461c-ba1d-2a106ed51cf5"} 
+[2025-04-11 16:19:52] local.INFO: [PlanoController] Preferência criada com sucesso para o usuário 1. Redirecionando para Mercado Pago...  

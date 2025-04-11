@@ -6,6 +6,8 @@ use App\Models\User;
 use App\Models\Bioimpedance;
 use App\Models\ConsumoAgua;
 use App\Models\Dieta;
+use App\Models\UserSubscription;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -28,11 +30,25 @@ class HomeController extends Controller
         $totalLitros = round($totalMl / 1000, 2);
 
         $widget = [
-            'users' => User::count(),
-            'bioimpedancias' => Bioimpedance::count(),
-            'dietas' => Dieta::count(),
+            'users' => $users,
+            'bioimpedancias' => $bioimpedancias,
+            'dietas' => $dietas,
             'aguaLitros' => $totalLitros,
         ];
+
+        $assinaturaAtiva = $user->subscriptions()
+        ->where('is_active', true)
+        ->latest('end_date')
+        ->first();
+
+        $diasRestantes = null;
+
+        if ($assinaturaAtiva) {
+            $hoje = Carbon::now()->startOfDay();
+            $fim = Carbon::parse($assinaturaAtiva->end_date)->startOfDay();
+
+            $diasRestantes = $hoje->diffInDays($fim, false);
+        }
 
         $bioimpedance = Bioimpedance::where('user_id', $user->id)
             ->orderByDesc('data_medicao')
@@ -76,7 +92,8 @@ class HomeController extends Controller
             'massaOssea',
             'grauObesidade',
             'impedanciaSegmentos',
-            'widget'
+            'widget',
+            'diasRestantes', 'assinaturaAtiva'
         ));
     }
 }

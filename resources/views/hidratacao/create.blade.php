@@ -1,4 +1,4 @@
-@extends('layouts.usuario')
+@extends('layouts.admin')
 
 @section('main-content')
     <h1 class="h3 mb-4 text-gray-800">Registrar Consumo de Água</h1>

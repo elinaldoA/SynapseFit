@@ -42,10 +42,24 @@ class User extends Authenticatable
     {
         return $this->hasMany(Workout::class);
     }
+    public function workoutProgress()
+    {
+        return $this->hasMany(WorkoutProgress::class);
+    }
     public function dieta()
     {
         return $this->hasOne(Dieta::class);
     }
+    public function alimentacoes()
+    {
+        return $this->hasMany(Alimentacao::class);
+    }
+
+    public function aguaConsumida()
+    {
+        return $this->hasMany(ConsumoAgua::class);
+    }
+
 
     public function getFullNameAttribute()
     {
@@ -75,5 +89,13 @@ class User extends Authenticatable
     public function isAluno()
     {
         return $this->role === 'aluno';
+    }
+    public function subscriptions()
+    {
+        return $this->hasMany(\App\Models\UserSubscription::class);
+    }
+    public function activeSubscription()
+    {
+        return $this->hasOne(\App\Models\UserSubscription::class)->latestOfMany();
     }
 }

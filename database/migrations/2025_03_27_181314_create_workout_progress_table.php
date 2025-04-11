@@ -17,6 +17,8 @@ return new class extends Migration
             $table->integer('series_completed');
             $table->string('carga')->nullable();
             $table->string('status');
+            $table->enum('type', ['A', 'B', 'C'])->nullable();
+            $table->datetime('data_treino')->nullable();
             $table->timestamps();
         });
     }
