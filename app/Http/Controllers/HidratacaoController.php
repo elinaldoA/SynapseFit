@@ -38,7 +38,7 @@ class HidratacaoController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'quantidade' => 'required|numeric|min:0.05|max:2000',
+            'quantidade' => 'required|numeric|min:0.05|max:6000',
         ]);
 
         ConsumoAgua::create([

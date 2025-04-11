@@ -85,28 +85,6 @@
         </div>
     </div>
     @else
-        <div class="row">
-            <div class="col-xl-6 col-md-12 mb-4">
-                <div class="card shadow h-100 py-2">
-                    <div class="card-body text-center">
-                        <div class="body-image">
-                            <img src="{{ asset('img/homem.jpg') }}" alt="Corpo Humano" class="img-fluid">
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-xl-6 col-md-12 mb-4">
-                <div class="card shadow h-100 py-2">
-                    <div class="card-body">
-                        <h5 class="card-title text-center">Gráfico de Bioimpedância</h5>
-                        <div id="grafico-bioimpedancia">
-                            <canvas id="bioimpedanceChart"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
         @if ($assinaturaAtiva)
             @if ($diasRestantes >= 0)
                 <div class="alert alert-info">

@@ -19,15 +19,21 @@ class WorkoutController extends Controller
     {
         $user = Auth::user();
 
+        // Pega os tipos distintos de treinos do usuário
         $workouts = $user->workouts()
             ->distinct('type')
             ->with('exercise')
             ->orderBy('type')
             ->get(['type']);
 
+        // Pega o progresso dos treinos agrupado por tipo, com data truncada
         $currentWorkouts = WorkoutProgress::where('user_id', $user->id)
             ->latest('data_treino')
             ->get()
+            ->map(function ($item) {
+                $item->data_treino = \Carbon\Carbon::parse($item->data_treino)->toDateString();
+                return $item;
+            })
             ->groupBy('type');
 
         $currentTag = [];
@@ -41,8 +47,33 @@ class WorkoutController extends Controller
             }
         }
 
-        return view('workouts.index', compact('workouts', 'currentTag', 'nextTag'));
+        // 🔒 Bloqueio por dia e ciclo de treinos
+        $ultimoTreino = WorkoutProgress::where('user_id', $user->id)
+            ->orderByDesc('data_treino')
+            ->first();
+
+        $bloqueadoHoje = false;
+        $tipoLiberado = null;
+
+        if ($ultimoTreino) {
+            $hoje = now()->toDateString();
+            $dataTreino = \Carbon\Carbon::parse($ultimoTreino->data_treino)->toDateString();
+            $bloqueadoHoje = $dataTreino === $hoje;
+            $tipoLiberado = $this->getNextWorkoutType($ultimoTreino->type);
+        } else {
+            // Se for o primeiro treino, libera o A
+            $tipoLiberado = 'A';
+        }
+
+        return view('workouts.index', compact(
+            'workouts',
+            'currentTag',
+            'nextTag',
+            'bloqueadoHoje',
+            'tipoLiberado'
+        ));
     }
+
 
     public function show($type)
     {
