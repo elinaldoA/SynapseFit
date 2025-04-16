@@ -3,7 +3,7 @@
 @section('main-content')
     <h1 class="h3 mb-4 text-gray-800">{{ __('Meu treino') }}</h1>
 
-    <div class="alert alert-info">
+    <div class="card-header">
         <strong>Nome:</strong> {{ Auth::user()->name }} <br>
         <strong>Objetivo:</strong> {{ Auth::user()->objetivo ?? 'Não definido' }}
     </div>
@@ -32,6 +32,7 @@
                 <thead>
                     <tr>
                         <th>Exercício</th>
+                        <th>Orientação</th>
                         <th>Séries</th>
                         <th>Repetições</th>
                         <th>Descanso</th>
@@ -48,6 +49,60 @@
                         <tr data-series="{{ $remainingSeries }}" data-rest="{{ $workout->descanso }}"
                             data-id="{{ $workout->id }}">
                             <td>{{ $workout->exercise->name }}</td>
+                            <td>
+                                @if ($workout->exercise->video_url)
+                                    @php
+                                        // Verificar se o link é do YouTube
+                                        $videoUrl = $workout->exercise->video_url;
+
+                                        // Se o link for do YouTube, converter para o formato embed
+                                        if (strpos($videoUrl, 'youtube.com/watch?v=') !== false) {
+                                            // Extrair o ID do vídeo do link do YouTube
+                                            preg_match('/[\\?\\&]v=([^\\?\\&]*)/', $videoUrl, $matches);
+                                            $videoId = $matches[1];
+                                            $videoUrl = "https://www.youtube.com/embed/$videoId";
+                                        }
+                                    @endphp
+
+                                    <!-- Botão que abre o modal -->
+                                    <button type="button" class="btn btn-info btn-sm" data-toggle="modal"
+                                        data-target="#videoModal{{ $workout->exercise->id }}">
+                                        <i class="fa fa-video"></i> {{ __('Assistir') }}
+                                    </button>
+
+                                    <!-- Modal para cada vídeo -->
+                                    <div class="modal fade" id="videoModal{{ $workout->exercise->id }}" tabindex="-1"
+                                        role="dialog" aria-labelledby="videoModalLabel{{ $workout->exercise->id }}"
+                                        aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title"
+                                                        id="videoModalLabel{{ $workout->exercise->id }}">
+                                                        {{ __('Vídeo de Orientação') }}</h5>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Fechar">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <!-- Exibir o vídeo embutido -->
+                                                    <div class="embed-responsive embed-responsive-16by9">
+                                                        <iframe class="embed-responsive-item" src="{{ $videoUrl }}"
+                                                            allowfullscreen></iframe>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-dismiss="modal">{{ __('Fechar') }}</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @else
+                                    <span class="text-muted">{{ __('Não disponível') }}</span>
+                                @endif
+                            </td>
                             <td class="series-count" data-value="{{ $remainingSeries }}">
                                 {{ str_repeat('✔ ', 3 - $remainingSeries) }}{{ $remainingSeries > 0 ? $remainingSeries : '' }}
                             </td>
@@ -405,7 +460,7 @@
                     }
                     if (finishAllSetsButton) {
                         finishAllSetsButton.disabled =
-                        false; // Habilita o botão "Finalizar Todas as Séries"
+                            false; // Habilita o botão "Finalizar Todas as Séries"
                     }
                     if (seriesCount) {
                         seriesCount.dataset.value = 3; // Reinicia o contador de séries no dataset

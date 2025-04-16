@@ -15,7 +15,7 @@
                         <p>{{ $plano->description }}</p>
                         <h4>R$ {{ number_format($plano->price, 2, ',', '.') }}</h4>
                         <p>Duração: {{ $plano->duration_in_days }} dias</p>
-                        <a href="{{ route('planos.confirmar', $plano) }}" class="btn btn-primary">
+                        <a href="{{ route('planos.upgrade') }}" class="btn btn-primary">
                             Assinar plano
                         </a>
                     </div>

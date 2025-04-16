@@ -3,11 +3,11 @@
 namespace App\Services;
 
 use App\Models\User;
-use App\Models\ConsumoAgua;
+use App\Models\Hidratacao;
 use App\Services\DietaService;
 use Carbon\Carbon;
 
-class AguaService
+class HidratacaoService
 {
     protected $dietaService;
 
@@ -20,7 +20,7 @@ class AguaService
     {
         $hoje = Carbon::today();
 
-        $aguaConsumida = ConsumoAgua::where('user_id', $user->id)
+        $aguaConsumida = Hidratacao::where('user_id', $user->id)
             ->whereDate('registrado_em', $hoje)
             ->sum('quantidade');
 

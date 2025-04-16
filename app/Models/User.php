@@ -57,7 +57,7 @@ class User extends Authenticatable
 
     public function aguaConsumida()
     {
-        return $this->hasMany(ConsumoAgua::class);
+        return $this->hasMany(Hidratacao::class);
     }
 
 

@@ -10,7 +10,7 @@ class PlanSeeder extends Seeder
     public function run(): void
     {
         Plan::create([
-            'name' => 'Free Trial',
+            'name' => 'Grátis',
             'description' => 'Acesso completo por 7 dias',
             'price' => 0.00,
             'duration_in_days' => 7,
@@ -21,14 +21,18 @@ class PlanSeeder extends Seeder
             'price' => 39.90,
             'duration_in_days' => 30,
         ]);
-
         Plan::create([
             'name' => 'Trimestral',
             'description' => 'Acesso completo por 90 dias com desconto',
             'price' => 99.90,
             'duration_in_days' => 90,
         ]);
-
+        Plan::create([
+            'name' => 'Semestral',
+            'description' => 'Acesso completo por 180 dias com desconto',
+            'price' => 179.90,
+            'duration_in_days' => 180,
+        ]);
         Plan::create([
             'name' => 'Anual',
             'description' => 'Plano anual com melhor custo-benefício',

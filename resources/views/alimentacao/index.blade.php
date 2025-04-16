@@ -22,21 +22,14 @@
         </div>
     @endif
 
-    <!-- Exibição das métricas da dieta com gráficos -->
     <div class="row mb-4">
         @foreach(['calorias', 'proteinas', 'carboidratos', 'gorduras', 'fibras', 'sodio'] as $tipo)
             @php
-                // Atribuindo valores baseados no tipo de nutriente
                 $consumido = $consumidos[$tipo] ?? 0;
                 $meta = $metas[$tipo] ?? 1;
                 $restante = max(0, $meta - $consumido);
                 $progresso = $meta > 0 ? ($consumido / $meta) : 0;
-
-                // Ajuste para definir o status visual
                 $statusClass = $progresso > 1 ? 'bg-danger' : ($progresso > 0.9 ? 'bg-warning' : 'bg-success');
-
-                // Determinando as unidades de acordo com o tipo de nutriente
-                // Se o tipo for sódio, usamos 'mg', para os outros 'g'
                 $unidade = ($tipo === 'sodio') ? 'mg' : 'g';
             @endphp
 
@@ -65,8 +58,6 @@
             <strong>Atenção!</strong> {{ session('validacaoDieta') }}
         </div>
     @endif
-
-    <!-- Card com tabela de alimentos consumidos -->
     <div class="card mt-3 mb-4 border-light shadow">
         <div class="card-header d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-2">
             <span>Alimentos Consumidos</span>
@@ -105,7 +96,7 @@
                                 <td>{{ $alimentacao->carboidratos }}</td>
                                 <td>{{ $alimentacao->gorduras }}</td>
                                 <td>{{ $alimentacao->fibras }}</td>
-                                <td>{{ $alimentacao->sodio }} mg</td> <!-- Exibindo a unidade "mg" para sódio -->
+                                <td>{{ $alimentacao->sodio }} mg</td>
                                 <td class="text-center">
                                     <a href="{{ route('alimentacao.edit', $alimentacao->id) }}" class="btn btn-warning btn-sm mb-1">Editar</a>
                                     <form action="{{ route('alimentacao.destroy', $alimentacao->id) }}" method="POST" class="d-inline-block">

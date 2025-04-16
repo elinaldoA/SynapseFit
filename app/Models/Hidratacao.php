@@ -4,14 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ConsumoAgua extends Model
+class Hidratacao extends Model
 {
-    protected $table = 'consumos_agua';
+    protected $table = 'hidratacao';
 
     protected $fillable = [
         'user_id',
         'quantidade',
-        'registrado_em',
+        'registrado_em'
     ];
 
     public $timestamps = false;

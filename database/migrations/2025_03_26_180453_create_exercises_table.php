@@ -18,6 +18,8 @@ class CreateExercisesTable extends Migration
             $table->string('name');
             $table->text('category')->nullable();
             $table->string('muscle_group');
+            $table->enum('level',['Iniciante','Intermediário','Avançado']);
+            $table->string('video_url')->nullable();
             $table->timestamps();
         });
     }

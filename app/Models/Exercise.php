@@ -13,7 +13,7 @@ class Exercise extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', 'category', 'muscle_group'
+        'name', 'category', 'muscle_group','level','video_url'
     ];
 
     public function workouts(): BelongsToMany

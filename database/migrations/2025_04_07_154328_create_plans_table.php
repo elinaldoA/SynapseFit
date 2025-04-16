@@ -12,8 +12,8 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->text('description')->nullable();
-            $table->decimal('price', 8, 2); // Ex: 99.90
-            $table->integer('duration_in_days'); // Ex: 30 para plano mensal
+            $table->decimal('price', 8, 2);
+            $table->integer('duration_in_days');
             $table->timestamps();
         });
     }

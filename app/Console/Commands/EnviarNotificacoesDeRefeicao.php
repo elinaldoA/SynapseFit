@@ -18,7 +18,7 @@ class EnviarNotificacoesDeRefeicao extends Command
 
     public function handle()
     {
-        $tipoRefeicao = $this->option('tipo'); // Recebe o tipo de refeição do comando agendado
+        $tipoRefeicao = $this->option('tipo');
 
         if (!$tipoRefeicao) {
             $this->error('O tipo de refeição é obrigatório!');
@@ -28,7 +28,6 @@ class EnviarNotificacoesDeRefeicao extends Command
         $users = User::all();
 
         foreach ($users as $user) {
-            // Enviar a notificação para o tipo específico de refeição
             $user->notify(new RefeicaoNotification($tipoRefeicao));
         }
 

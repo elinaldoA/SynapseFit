@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\ConsumoAgua;
-use App\Services\AguaService;
+use App\Models\Hidratacao;
+use App\Services\HidratacaoService;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
@@ -12,7 +12,7 @@ class HidratacaoController extends Controller
 {
     protected $aguaService;
 
-    public function __construct(AguaService $aguaService)
+    public function __construct(HidratacaoService $aguaService)
     {
         $this->aguaService = $aguaService;
     }
@@ -22,7 +22,7 @@ class HidratacaoController extends Controller
         $user = Auth::user();
         $status = $this->aguaService->verificarMetaDiaria($user);
 
-        $registros = ConsumoAgua::where('user_id', $user->id)
+        $registros = Hidratacao::where('user_id', $user->id)
             ->whereDate('registrado_em', Carbon::today())
             ->orderBy('registrado_em', 'desc')
             ->get();
@@ -41,7 +41,7 @@ class HidratacaoController extends Controller
             'quantidade' => 'required|numeric|min:0.05|max:6000',
         ]);
 
-        ConsumoAgua::create([
+        Hidratacao::create([
             'user_id' => Auth::id(),
             'quantidade' => $request->quantidade,
             'registrado_em' => Carbon::now(),
@@ -52,7 +52,7 @@ class HidratacaoController extends Controller
 
     public function edit($id)
     {
-        $registro = ConsumoAgua::where('user_id', Auth::id())->findOrFail($id);
+        $registro = Hidratacao::where('user_id', Auth::id())->findOrFail($id);
         return view('hidratacao.edit', compact('registro'));
     }
 
@@ -62,7 +62,7 @@ class HidratacaoController extends Controller
             'quantidade' => 'required|numeric|min:0.05|max:2000',
         ]);
 
-        $registro = ConsumoAgua::where('user_id', Auth::id())->findOrFail($id);
+        $registro = Hidratacao::where('user_id', Auth::id())->findOrFail($id);
         $registro->update([
             'quantidade' => $request->quantidade,
             'registrado_em' => Carbon::now(),
@@ -73,7 +73,7 @@ class HidratacaoController extends Controller
 
     public function destroy($id)
     {
-        $registro = ConsumoAgua::where('user_id', Auth::id())->findOrFail($id);
+        $registro = Hidratacao::where('user_id', Auth::id())->findOrFail($id);
         $registro->delete();
 
         return redirect()->route('hidratacao')->with('success', 'Registro de água removido com sucesso!');

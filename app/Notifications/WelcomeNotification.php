@@ -24,7 +24,7 @@ class WelcomeNotification extends Notification
     {
         return (new MailMessage)
             ->subject('Bem-vindo ao SynapseFit!')
-            ->view('emails.welcome', ['user' => $notifiable]);
+            ->view('emails.boas_vindas', ['user' => $notifiable]);
     }
     public function toDatabase($notifiable)
     {

@@ -62,8 +62,7 @@ class RegisterController extends Controller
             'role' => 'aluno',
         ]);
 
-        // 🆓 Busca o plano "Free Trial" (criado via seeder)
-        $freePlan = Plan::where('name', 'Free Trial')->first();
+        $freePlan = Plan::where('name', 'Grátis')->first();
 
         if ($freePlan) {
             UserSubscription::create([

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Bioimpedance;
-use App\Models\ConsumoAgua;
+use App\Models\Hidratacao;
 use App\Models\Dieta;
 use App\Models\UserSubscription;
 use Carbon\Carbon;
@@ -26,7 +26,7 @@ class HomeController extends Controller
         $bioimpedancias = Bioimpedance::count();
         $dietas = Dieta::count();
 
-        $totalMl = ConsumoAgua::sum('quantidade');
+        $totalMl = Hidratacao::sum('quantidade');
         $totalLitros = round($totalMl / 1000, 2);
 
         $widget = [

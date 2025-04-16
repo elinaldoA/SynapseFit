@@ -5,11 +5,11 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
 
-class CreateConsumosAguaTable extends Migration
+class CreateHidratacoesTable extends Migration
 {
     public function up()
     {
-        Schema::create('consumos_agua', function (Blueprint $table) {
+        Schema::create('hidratacao', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->integer('quantidade');
@@ -19,6 +19,6 @@ class CreateConsumosAguaTable extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('consumos_agua');
+        Schema::dropIfExists('hidratacao');
     }
 };
