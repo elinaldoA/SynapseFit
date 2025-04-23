@@ -14,6 +14,7 @@ use App\Http\Controllers\Usuario\AlimentacaoController;
 use App\Http\Controllers\Usuario\WorkoutController;
 use App\Http\Controllers\Usuario\HidratacaoController;
 use App\Http\Controllers\Usuario\PlanoController;
+use App\Http\Controllers\Usuario\RankingController;
 use App\Http\Controllers\Usuario\TalkfitController;
 
 Route::get('/', function () {
@@ -38,6 +39,7 @@ Route::middleware(['auth', 'check.subscription'])->group(function () {
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
     //Conquistas
     Route::get('/conquistas', [AchievementController::class, 'index'])->name('conquistas');
+    Route::get('/ranking', [RankingController::class, 'index'])->name('ranking');
 
     // TREINOS
     Route::get('/workouts', [WorkoutController::class, 'index'])->name('workouts');

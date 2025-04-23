@@ -94,13 +94,6 @@
                         <span>{{ __('Conquistas') }}</span>
                     </a>
                 </li>
-
-                <li class="nav-item {{ Nav::isRoute('talkfit') }}">
-                    <a class="nav-link" href="{{ route('talkfit.index') }}">
-                        <i class="fas fa-fw fa-message"></i>
-                        <span>{{ __('Talkfit') }}</span>
-                    </a>
-                </li>
             @elseif(Auth::user()->role === 'admin')
                 <!-- Menu para ADMINISTRADOR -->
                 <div class="sidebar-heading">
