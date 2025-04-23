@@ -26,14 +26,7 @@ class CheckSubscription
             ->orderByDesc('end_date')
             ->first();
 
-        /*Log::info('CheckSubscription', [
-            'user_id' => $user->id,
-            'now' => $now->toDateTimeString(),
-            'has_valid_subscription' => $subscription !== null,
-        ]);*/
-
         if (!$subscription) {
-            // Se existia uma assinatura ativa que expirou, marca como inativa
             $assinaturaExpirada = $user->subscriptions()
                 ->where('is_active', true)
                 ->whereDate('end_date', '<', $now)

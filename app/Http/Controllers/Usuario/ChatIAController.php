@@ -1,14 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Usuario;
 
+use App\Http\Controllers\Controller;
 use App\Models\ChatMessage;
 use App\Models\WorkoutProgress;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
-class ChatController extends Controller
+class ChatIAController extends Controller
 {
     public function index()
     {
@@ -33,7 +34,7 @@ class ChatController extends Controller
                 ->get();
         }
 
-        return view('chat.index', compact('messages'));
+        return view('usuario.chat.index', compact('messages'));
     }
 
     public function enviar(Request $request)

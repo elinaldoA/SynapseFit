@@ -27,10 +27,7 @@ class EnviarNotificacoesHidratacao extends Command
         foreach ($users as $user) {
             $status = $this->HidratacaoService->verificarMetaDiaria($user);
 
-            /*Log::info("Usuário {$user->id}: {$status['consumido_ml']}ml / {$status['meta_ml']}ml");*/
-
             if ($status['consumido_ml'] < $status['meta_ml']) {
-                /*Log::info("Enviando notificação para usuário {$user->id}");*/
                 $user->notify(new HidratacaoNotification());
             }
         }

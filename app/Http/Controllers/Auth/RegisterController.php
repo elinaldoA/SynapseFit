@@ -60,6 +60,7 @@ class RegisterController extends Controller
             'age' => $data['age'],
             'objetivo' => $data['objetivo'],
             'role' => 'aluno',
+            'pontos' => '50',
         ]);
 
         $freePlan = Plan::where('name', 'Grátis')->first();

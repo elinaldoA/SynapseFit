@@ -9,7 +9,6 @@ class SubscriptionService
 {
     public function getSubscriptionType($userId)
     {
-        // Busca a assinatura ativa do usuário
         $subscription = UserSubscription::where('user_id', $userId)
             ->where('is_active', true)
             ->latest()

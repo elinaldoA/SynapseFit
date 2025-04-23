@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Usuario;
 
+use App\Http\Controllers\Controller;
 use App\Models\Plan;
 use App\Models\Subscription;
 use App\Services\MercadoPagoService;
@@ -16,25 +17,25 @@ class PlanoController extends Controller
     public function index()
     {
         $plans = Plan::all();
-        return view('planos.index', compact('plans'));
+        return view('usuario.planos.index', compact('plans'));
     }
 
     public function confirmar(Plan $plan)
     {
-        return view('planos.confirmar', ['plano' => $plan]);
+        return view('usuario.planos.confirmar', ['plano' => $plan]);
     }
 
     public function assinar(Request $request, Plan $plan, MercadoPagoService $mpService)
     {
         $user = Auth::user();
-        Log::debug("[PlanoController] Usuário {$user->id} iniciou assinatura do plano '{$plan->name}'.");
+        //Log::debug("[PlanoController] Usuário {$user->id} iniciou assinatura do plano '{$plan->name}'.");
 
         $validator = Validator::make($request->all(), [
             'payment_method' => 'required|in:boleto,debito,credito,pix',
         ]);
 
         if ($validator->fails()) {
-            Log::error('[PlanoController] Validação falhou.', $validator->errors()->toArray());
+            //Log::error('[PlanoController] Validação falhou.', $validator->errors()->toArray());
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
@@ -43,26 +44,22 @@ class PlanoController extends Controller
         $pagamento = $mpService->criarPreferencia("Plano: {$plan->name}", $plan->price, $paymentMethod);
 
         if (!$pagamento['success']) {
-            Log::error('[PlanoController] Erro ao criar preferência de pagamento.', ['mensagem' => $pagamento['mensagem']]);
+            //Log::error('[PlanoController] Erro ao criar preferência de pagamento.', ['mensagem' => $pagamento['mensagem']]);
             return redirect()->back()->with('error', $pagamento['mensagem']);
         }
 
-        Log::info("[PlanoController] Preferência criada com sucesso para o usuário {$user->id}. Redirecionando para Mercado Pago...");
+        //Log::info("[PlanoController] Preferência criada com sucesso para o usuário {$user->id}. Redirecionando para Mercado Pago...");
 
-        // Redireciona para o checkout do Mercado Pago
         return redirect()->away($pagamento['url']);
     }
 
-    // Endpoint de sucesso após retorno do Mercado Pago (para completar assinatura)
     public function sucesso(Request $request)
     {
         $user = Auth::user();
 
-        // Aqui você pode verificar se já existe uma assinatura ativa antes de salvar
-        $plano = Plan::where('price', $request->query('valor'))->first(); // opcional, pode vir do banco ou salvar no session
-
+        $plano = Plan::where('price', $request->query('valor'))->first();
         if (!$plano) {
-            Log::warning('[PlanoController] Plano não encontrado após pagamento.');
+            //Log::warning('[PlanoController] Plano não encontrado após pagamento.');
             return redirect()->route('home')->with('error', 'Plano não encontrado.');
         }
 
@@ -101,7 +98,7 @@ class PlanoController extends Controller
             'payment_status' => 'pago',
         ]);
 
-        Log::info("[PlanoController] Plano '{$plano->name}' ativado para o usuário {$user->id}.");
+        //Log::info("[PlanoController] Plano '{$plano->name}' ativado para o usuário {$user->id}.");
 
         return redirect()->route('home')->with('success', 'Plano assinado com sucesso!');
     }
@@ -118,6 +115,6 @@ class PlanoController extends Controller
 
         $planos = Plan::all();
 
-        return view('planos.upgrade', compact('planoAtual', 'planos'));
+        return view('usuario.planos.upgrade', compact('planoAtual', 'planos'));
     }
 }

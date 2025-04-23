@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Administrador;
 
+use App\Http\Controllers\Controller;
 use App\Models\Plan;
 use App\Models\UserSubscription;
 use Illuminate\Http\Request;
@@ -35,31 +36,26 @@ class FinanceiroController extends Controller
 
         $assinaturas = $assinaturasQuery->paginate(10);
 
-        // Total arrecadado no período
         $totalArrecadado = $assinaturas->sum(function ($assinatura) {
             return $assinatura->plan->price;
         });
 
-        // Contagem das assinaturas ativas
         $ativos = UserSubscription::where('is_active', true)
             ->whereBetween('start_date', [$startDate, $endDate])
             ->count();
 
-        // Contagem das assinaturas inativas
         $inativos = UserSubscription::where('is_active', false)
             ->whereBetween('start_date', [$startDate, $endDate])
             ->count();
 
         $totalAssinaturas = $assinaturas->count();
 
-        // Resumo por plano
         $resumoPorPlano = $assinaturas->groupBy('plan_id')->map(function ($group) {
             return $group->sum(function ($assinatura) {
                 return $assinatura->plan->price;
             });
         });
 
-        // Dados de planos e métodos de pagamento
         $plans = Plan::all();
         $paymentMethods = UserSubscription::distinct()->pluck('payment_method');
 

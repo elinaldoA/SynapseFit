@@ -1,60 +1,63 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Usuario;
 
+use App\Http\Controllers\Controller;
 use App\Models\Alimentacao;
 use App\Services\DietaService;
+use App\Services\AchievementService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 class AlimentacaoController extends Controller
 {
     protected $dietaService;
+    protected $achievementService;
 
-    public function __construct(DietaService $dietaService)
+    public function __construct(DietaService $dietaService, AchievementService $achievementService)
     {
         $this->dietaService = $dietaService;
-     }
+        $this->achievementService = $achievementService;
+    }
 
-     public function index()
-     {
-         $user = auth()->user();
+    public function index()
+    {
+        $user = auth()->user();
 
-         $alimentacoes = Alimentacao::where('user_id', $user->id)
-             ->whereDate('data', \Carbon\Carbon::today())
-             ->get();
+        $alimentacoes = Alimentacao::where('user_id', $user->id)
+            ->whereDate('data', \Carbon\Carbon::today())
+            ->get();
 
-         $dieta = $this->dietaService->gerarDieta($user);
-         $validacaoDieta = $this->dietaService->validarDieta($user, $alimentacoes);
+        $dieta = $this->dietaService->gerarDieta($user);
+        $validacaoDieta = $this->dietaService->validarDieta($user, $alimentacoes);
 
-         $consumidos = [
-             'calorias' => $alimentacoes->sum('calorias'),
-             'proteinas' => $alimentacoes->sum('proteinas'),
-             'carboidratos' => $alimentacoes->sum('carboidratos'),
-             'gorduras' => $alimentacoes->sum('gorduras'),
-             'agua' => $alimentacoes->sum('agua'),
-             'fibras' => $alimentacoes->sum('fibras'),
-             'sodio' => $alimentacoes->sum('sodio'),
-         ];
+        $consumidos = [
+            'calorias' => $alimentacoes->sum('calorias'),
+            'proteinas' => $alimentacoes->sum('proteinas'),
+            'carboidratos' => $alimentacoes->sum('carboidratos'),
+            'gorduras' => $alimentacoes->sum('gorduras'),
+            'agua' => $alimentacoes->sum('agua'),
+            'fibras' => $alimentacoes->sum('fibras'),
+            'sodio' => $alimentacoes->sum('sodio'),
+        ];
 
-         $metas = [
-             'calorias' => $dieta['calorias'] ?? 0,
-             'proteinas' => $dieta['proteinas'] ?? 0,
-             'carboidratos' => $dieta['carboidratos'] ?? 0,
-             'gorduras' => $dieta['gorduras'] ?? 0,
-             'agua' => $dieta['agua'] ?? 0,
-         ];
+        $metas = [
+            'calorias' => $dieta['calorias'] ?? 0,
+            'proteinas' => $dieta['proteinas'] ?? 0,
+            'carboidratos' => $dieta['carboidratos'] ?? 0,
+            'gorduras' => $dieta['gorduras'] ?? 0,
+            'agua' => $dieta['agua'] ?? 0,
+        ];
 
-         return view('alimentacao.index', compact('alimentacoes', 'dieta', 'validacaoDieta', 'consumidos', 'metas'));
-     }
-
+        return view('usuario.alimentacao.index', compact('alimentacoes', 'dieta', 'validacaoDieta', 'consumidos', 'metas'));
+    }
 
     public function create()
     {
         $dieta = $this->dietaService->gerarDieta(auth()->user());
         $validacaoDieta = $this->dietaService->validarDieta(auth()->user(), Alimentacao::where('user_id', auth()->user()->id)->get());
 
-        return view('alimentacao.create', compact('dieta', 'validacaoDieta'));
+        return view('usuario.alimentacao.create', compact('dieta', 'validacaoDieta'));
     }
 
     public function store(Request $request)
@@ -86,6 +89,9 @@ class AlimentacaoController extends Controller
             'data' => $request->data,
         ]);
 
+        // Verifica se o usuário atingiu conquistas
+        $this->achievementService->checkAchievements(auth()->user());
+
         $alimentacoes = Alimentacao::where('user_id', auth()->user()->id)->get();
         $validacao = $this->dietaService->validarDieta(auth()->user(), $alimentacoes);
         if ($validacao != 'Dieta dentro dos limites.') {
@@ -101,7 +107,7 @@ class AlimentacaoController extends Controller
         $dieta = $this->dietaService->gerarDieta(auth()->user());
         $validacaoDieta = $this->dietaService->validarDieta(auth()->user(), Alimentacao::where('user_id', auth()->user()->id)->get());
 
-        return view('alimentacao.edit', compact('alimentacao', 'dieta', 'validacaoDieta'));
+        return view('usuario.alimentacao.edit', compact('alimentacao', 'dieta', 'validacaoDieta'));
     }
 
     public function update(Request $request, Alimentacao $alimentacao)
@@ -148,4 +154,3 @@ class AlimentacaoController extends Controller
         return redirect()->route('alimentacao')->with('success', 'Alimento excluído com sucesso!');
     }
 }
-

@@ -30,9 +30,6 @@ class Bioimpedance extends Model
         'data_medicao',
     ];
 
-    /**
-     * Relacionamento: Cada bioimpedância pertence a um usuário.
-     */
     public function user()
     {
         return $this->belongsTo(User::class);

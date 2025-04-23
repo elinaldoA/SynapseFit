@@ -23,6 +23,7 @@ return new class extends Migration
             $table->integer('age');
             $table->string('objetivo');
             $table->enum('role',['aluno','admin']);
+            $table->string('pontos')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

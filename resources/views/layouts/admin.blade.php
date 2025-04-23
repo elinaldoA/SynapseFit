@@ -8,6 +8,7 @@
     <meta name="author" content="Elinaldo Agostinho">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ config('app.name', 'SynapseFit') }}</title>
+    <link rel="manifest" href="{{ asset('manifest.json') }}">
     <!-- Fonts -->
     <link href="{{ asset('vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet">
     <link
@@ -87,10 +88,17 @@
                     </a>
                 </li>
 
-                <li class="nav-item {{ Nav::isRoute('chat') }}">
-                    <a class="nav-link" href="{{ route('chat.index') }}">
+                <li class="nav-item {{ Nav::isRoute('conquistas') }}">
+                    <a class="nav-link" href="{{ route('conquistas') }}">
+                        <i class="fas fa-fw fa-medal"></i>
+                        <span>{{ __('Conquistas') }}</span>
+                    </a>
+                </li>
+
+                <li class="nav-item {{ Nav::isRoute('talkfit') }}">
+                    <a class="nav-link" href="{{ route('talkfit.index') }}">
                         <i class="fas fa-fw fa-message"></i>
-                        <span>{{ __('Chat') }}</span>
+                        <span>{{ __('Talkfit') }}</span>
                     </a>
                 </li>
             @elseif(Auth::user()->role === 'admin')
@@ -103,6 +111,20 @@
                     <a class="nav-link" href="{{ route('usuarios') }}">
                         <i class="fas fa-fw fa-users"></i>
                         <span>{{ __('Usuários') }}</span>
+                    </a>
+                </li>
+
+                <li class="nav-item {{ Nav::isRoute('exercicios') }}">
+                    <a class="nav-link" href="{{ route('exercicios') }}">
+                        <i class="fas fa-fw fa-list"></i>
+                        <span>{{ __('Exercicios') }}</span>
+                    </a>
+                </li>
+
+                <li class="nav-item {{ Nav::isRoute('treinos') }}">
+                    <a class="nav-link" href="{{ route('treinos') }}">
+                        <i class="fas fa-fw fa-dumbbell"></i>
+                        <span>{{ __('Treinos') }}</span>
                     </a>
                 </li>
 
@@ -150,7 +172,7 @@
                         </li>
                         <li class="nav-item dropdown no-arrow mx-1">
                             <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
-                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-bell fa-fw"></i>
                                 @if (auth()->user()->unreadNotifications->count())
                                     <span class="badge badge-danger badge-counter">
@@ -160,7 +182,7 @@
                             </a>
 
                             <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                                 aria-labelledby="alertsDropdown" style="min-width: 320px;">
+                                aria-labelledby="alertsDropdown" style="min-width: 320px;">
                                 <h6 class="dropdown-header bg-primary text-white">
                                     <i class="fas fa-bell mr-2"></i> Central de Avisos
                                 </h6>
@@ -173,13 +195,13 @@
                                             </div>
                                             <div class="flex-grow-1">
                                                 <div class="text-gray-800 text-sm">
-                                                    {{ $notification->data['mensagem'] ?? $notification->data['message'] ?? 'Nova notificação' }}
+                                                    {{ $notification->data['mensagem'] ?? ($notification->data['message'] ?? 'Nova notificação') }}
                                                 </div>
                                                 <small class="text-xs text-gray-500 d-block">
                                                     {{ $notification->created_at->diffForHumans() }}
                                                 </small>
                                                 <a href="{{ route('notifications.read', $notification->id) }}"
-                                                   class="text-xs text-blue-600 hover:underline mt-1 d-inline-block">
+                                                    class="text-xs text-blue-600 hover:underline mt-1 d-inline-block">
                                                     <i class="fas fa-check mr-1"></i>Marcar como lida
                                                 </a>
                                             </div>
@@ -195,7 +217,7 @@
                                     <div class="dropdown-divider"></div>
                                     <div class="text-center mb-2">
                                         <a href="{{ route('notifications.read.all') }}"
-                                           class="text-xs text-success font-weight-bold hover:underline">
+                                            class="text-xs text-success font-weight-bold hover:underline">
                                             <i class="fas fa-check-double mr-1"></i>Marcar todas como lidas
                                         </a>
                                     </div>
@@ -300,7 +322,7 @@
         window.addEventListener('load', function() {
             setInterval(function() {
                 window.location.reload(true);
-            }, 60000);
+            }, 150000);
         });
     </script>
 </body>

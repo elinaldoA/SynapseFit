@@ -1,20 +1,24 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Usuario;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Hidratacao;
 use App\Services\HidratacaoService;
+use App\Services\AchievementService;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
 class HidratacaoController extends Controller
 {
     protected $aguaService;
+    protected $achievementService;
 
-    public function __construct(HidratacaoService $aguaService)
+    public function __construct(HidratacaoService $aguaService, AchievementService $achievementService)
     {
         $this->aguaService = $aguaService;
+        $this->achievementService = $achievementService;
     }
 
     public function index()
@@ -27,12 +31,12 @@ class HidratacaoController extends Controller
             ->orderBy('registrado_em', 'desc')
             ->get();
 
-        return view('hidratacao.index', compact('status', 'registros'));
+        return view('usuario.hidratacao.index', compact('status', 'registros'));
     }
 
     public function create()
     {
-        return view('hidratacao.create');
+        return view('usuario.hidratacao.create');
     }
 
     public function store(Request $request)
@@ -47,13 +51,16 @@ class HidratacaoController extends Controller
             'registrado_em' => Carbon::now(),
         ]);
 
+        // Verificar e aplicar conquistas
+        $this->achievementService->checkAchievements(Auth::user());
+
         return redirect()->route('hidratacao')->with('success', 'Água registrada com sucesso!');
     }
 
     public function edit($id)
     {
         $registro = Hidratacao::where('user_id', Auth::id())->findOrFail($id);
-        return view('hidratacao.edit', compact('registro'));
+        return view('usuario.hidratacao.edit', compact('registro'));
     }
 
     public function update(Request $request, $id)

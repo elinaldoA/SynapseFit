@@ -91,11 +91,11 @@
                                 <td>{{ ucfirst($alimentacao->refeicao) }}</td>
                                 <td>{{ \Carbon\Carbon::parse($alimentacao->data)->format('d/m/Y') }}</td>
                                 <td>{{ $alimentacao->descricao ?? '-' }}</td>
-                                <td>{{ $alimentacao->calorias }}</td>
-                                <td>{{ $alimentacao->proteinas }}</td>
-                                <td>{{ $alimentacao->carboidratos }}</td>
-                                <td>{{ $alimentacao->gorduras }}</td>
-                                <td>{{ $alimentacao->fibras }}</td>
+                                <td>{{ $alimentacao->calorias }} kcal</td>
+                                <td>{{ $alimentacao->proteinas }} g</td>
+                                <td>{{ $alimentacao->carboidratos }} g</td>
+                                <td>{{ $alimentacao->gorduras }} g</td>
+                                <td>{{ $alimentacao->fibras }} g</td>
                                 <td>{{ $alimentacao->sodio }} mg</td>
                                 <td class="text-center">
                                     <a href="{{ route('alimentacao.edit', $alimentacao->id) }}" class="btn btn-warning btn-sm mb-1">Editar</a>

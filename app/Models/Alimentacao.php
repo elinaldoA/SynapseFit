@@ -25,13 +25,11 @@ class Alimentacao extends Model
         'data',
     ];
 
-    // Relacionamento com o usuário
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    // Refeições padrão
     public static function refeicoesPadrao()
     {
         return ['café', 'almoço', 'lanche', 'jantar'];

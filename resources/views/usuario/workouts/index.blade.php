@@ -4,12 +4,14 @@
 <div class="container">
     <h1 class="mb-4">Meus Treinos</h1>
 
+    {{-- Alerta de bloqueio do dia --}}
     @if ($bloqueadoHoje)
         <div class="alert alert-warning text-center">
             Você já realizou um treino hoje. O próximo será liberado amanhã.
         </div>
     @endif
 
+    {{-- Lista de treinos --}}
     <div class="row">
         @foreach ($workouts as $workout)
             <div class="col-md-4 mb-3">
@@ -25,7 +27,7 @@
                             <p class="card-text text-muted">Treino ainda não iniciado</p>
                         @endif
 
-                        {{-- Liberação do botão com base na lógica de ciclo e bloqueio diário --}}
+                        {{-- Botão de ação --}}
                         @if ($workout->type === $tipoLiberado && !$bloqueadoHoje)
                             <a href="{{ route('workouts.show', $workout->type) }}" class="btn btn-primary">Começar</a>
                         @else

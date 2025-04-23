@@ -15,17 +15,20 @@ class WorkoutSeeder extends Seeder
 
         // Exercícios para membros superiores
         $upper_body_exercises = Exercise::where('muscle_group', 'Peito')
-                                        ->orWhere('muscle_group', 'Costas')
-                                        ->orWhere('muscle_group', 'Ombros')
-                                        ->orWhere('muscle_group', 'Bíceps')
-                                        ->orWhere('muscle_group', 'Tríceps')
-                                        ->orWhere('muscle_group', 'Abdômen')
-                                        ->get();
+            ->orWhere('muscle_group', 'Costas')
+            ->orWhere('muscle_group', 'Ombros')
+            ->orWhere('muscle_group', 'Bíceps')
+            ->orWhere('muscle_group', 'Tríceps')
+            ->orWhere('muscle_group', 'Abdômen')
+            ->orWhere('muscle_group', 'Trapézio')
+            ->orWhere('muscle_group', 'Antebraço')
+            ->get();
 
         // Exercícios para membros inferiores
         $lower_body_exercises = Exercise::where('muscle_group', 'Pernas')
-                                        ->orWhere('muscle_group', 'Glúteos')
-                                        ->get();
+            ->orWhere('muscle_group', 'Glúteos')
+            ->orWhere('muscle_group', 'Panturrilha')
+            ->get();
 
         foreach ($users as $user) {
             $this->createWorkout($user, 'A', $upper_body_exercises->random(10));
@@ -33,6 +36,7 @@ class WorkoutSeeder extends Seeder
             $this->createWorkout($user, 'C', $lower_body_exercises->random(10));
         }
     }
+
 
     private function createWorkout($user, $type, $exercises)
     {

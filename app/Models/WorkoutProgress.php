@@ -18,6 +18,10 @@ class WorkoutProgress extends Model {
         'type',
     ];
 
+    protected $casts = [
+        'data_treino' => 'datetime',
+    ];
+
     public function user() {
         return $this->belongsTo(User::class);
     }

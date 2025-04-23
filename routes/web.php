@@ -1,17 +1,20 @@
 <?php
 
-use App\Http\Controllers\AlimentacaoController;
-use App\Http\Controllers\ChatController;
-use App\Http\Controllers\ChatIAController;
-use App\Http\Controllers\FinanceiroController;
+use App\Http\Controllers\Administrador\ExerciseController;
+use App\Http\Controllers\Administrador\FinanceiroController;
+use App\Http\Controllers\Administrador\UserController;
+use App\Http\Controllers\Administrador\WorkoutAdminController;
+use App\Http\Controllers\Usuario\ChatIAController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\WorkoutController;
-use App\Http\Controllers\HidratacaoController;
-use App\Http\Controllers\PlanoController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\Usuario\AchievementController;
+use App\Http\Controllers\Usuario\AlimentacaoController;
+use App\Http\Controllers\Usuario\WorkoutController;
+use App\Http\Controllers\Usuario\HidratacaoController;
+use App\Http\Controllers\Usuario\PlanoController;
+use App\Http\Controllers\Usuario\TalkfitController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -25,14 +28,16 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/planos/{plan}/assinar', [PlanoController::class, 'assinar'])->name('planos.assinar');
     Route::get('/planos/sucesso', [PlanoController::class, 'sucesso'])->name('planos.sucesso');
     Route::get('/planos/upgrade', [PlanoController::class, 'upgrade'])->name('planos.upgrade');
-    Route::get('/chat', [ChatController::class, 'index'])->name('chat.index');
-    Route::post('/chat/enviar', [ChatController::class, 'enviar'])->name('chat.enviar');
+    Route::get('/chat', [ChatIAController::class, 'index'])->name('chat.index');
+    Route::post('/chat/enviar', [ChatIAController::class, 'enviar'])->name('chat.enviar');
 });
 
 Route::middleware(['auth', 'check.subscription'])->group(function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    //Conquistas
+    Route::get('/conquistas', [AchievementController::class, 'index'])->name('conquistas');
 
     // TREINOS
     Route::get('/workouts', [WorkoutController::class, 'index'])->name('workouts');
@@ -63,6 +68,20 @@ Route::middleware(['auth', 'check.subscription'])->group(function () {
     Route::get('/administrador/usuarios/{usuario}/edit', [UserController::class, 'edit'])->name('usuarios.edit');
     Route::put('/administrador/usuarios/{usuario}', [UserController::class, 'update'])->name('usuarios.update');
     Route::delete('/administrador/usuarios/{usuario}', [UserController::class, 'destroy'])->name('usuarios.destroy');
+    //LISTAGEM DE EXERCICIOS
+    Route::get('/administrador/exercicios/index', [ExerciseController::class, 'index'])->name('exercicios');
+    Route::get('/administrador/exercicios/create', [ExerciseController::class, 'create'])->name('exercicios.create');
+    Route::post('/administrador/exercicios', [ExerciseController::class, 'store'])->name('exercicios.store');
+    Route::get('/administrador/exercicios/{exercise}/edit', [ExerciseController::class, 'edit'])->name('exercicios.edit');
+    Route::put('/administrador/exercicios/{exercise}', [ExerciseController::class, 'update'])->name('exercicios.update');
+    Route::delete('/administrador/exercicios/{exercise}', [ExerciseController::class, 'destroy'])->name('exercicios.destroy');
+    //LISTAGEM DE TREINOS
+    Route::get('/administrador/treinos/index', [WorkoutAdminController::class, 'index'])->name('treinos');
+    Route::get('/administrador/treinos/create', [WorkoutAdminController::class, 'create'])->name('treinos.create');
+    Route::post('/administrador/treinos', [WorkoutAdminController::class, 'store'])->name('treinos.store');
+    Route::get('/administrador/treinos/{treino}/edit', [WorkoutAdminController::class, 'edit'])->name('treinos.edit');
+    Route::put('/administrador/treinos/{treino}', [WorkoutAdminController::class, 'update'])->name('treinos.update');
+    Route::delete('/administrador/treinos/{treino}', [WorkoutAdminController::class, 'destroy'])->name('treinos.destroy');
     //FINANCEIRO
     Route::get('/administrador/financeiro', [FinanceiroController::class, 'index'])->name('financeiro');
 

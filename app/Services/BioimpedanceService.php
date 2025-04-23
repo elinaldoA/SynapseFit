@@ -8,7 +8,6 @@ use Carbon\Carbon;
 
 class BioimpedanceService
 {
-    // Limites IMC
     private const IMC_UNDERWEIGHT = 18.5;
     private const IMC_NORMAL = 25;
     private const IMC_OVERWEIGHT = 30;
@@ -22,12 +21,10 @@ class BioimpedanceService
         $age = $user->age;
         $sex = $user->sex;
 
-        // Validação
         if (!$height || !$weight || !$age || !$sex) {
             throw new \InvalidArgumentException("Dados incompletos para cálculo de bioimpedância.");
         }
 
-        // Cálculos
         $imc = $weight / ($height * $height);
         $massaMagra = $this->calcularMassaMagra($weight, $height, $sex);
         $percentualGordura = $this->calcularPercentualGordura($imc, $age, $sex);
@@ -43,7 +40,6 @@ class BioimpedanceService
         $grauObesidade = $this->calcularGrauObesidade($imc);
         $impedanciaSegmentos = $this->calcularImpedanciaSegmentos($massaMagra, $percentualGordura);
 
-        // Persistência
         Bioimpedance::create([
             'user_id' => $user->id,
             'imc' => round($imc, 2),

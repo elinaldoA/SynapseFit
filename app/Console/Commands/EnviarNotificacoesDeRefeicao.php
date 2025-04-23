@@ -4,11 +4,11 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\Models\User;
-use App\Notifications\RefeicaoNotification; // Supondo que você tenha uma notificação personalizada
+use App\Notifications\RefeicaoNotification;
 
 class EnviarNotificacoesDeRefeicao extends Command
 {
-    protected $signature = 'notificar:refeicao {--tipo=}';  // Recebe o tipo de refeição como parâmetro
+    protected $signature = 'notificar:refeicao {--tipo=}';
     protected $description = 'Envia notificações sobre a refeição do dia para os usuários';
 
     public function __construct()
