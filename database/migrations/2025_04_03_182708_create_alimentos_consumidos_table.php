@@ -4,11 +4,11 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAlimentacoesTable extends Migration
+class CreateAlimentosConsumidosTable extends Migration
 {
     public function up()
     {
-        Schema::create('alimentacoes', function (Blueprint $table) {
+        Schema::create('alimentos_consumidos', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->enum('refeicao', ['café', 'almoço', 'lanche', 'jantar']);
@@ -19,6 +19,7 @@ class CreateAlimentacoesTable extends Migration
             $table->float('agua')->nullable();
             $table->float('fibras')->nullable();
             $table->float('sodio')->nullable();
+            $table->text('porcao')->nullable();
             $table->text('descricao')->nullable();
             $table->date('data');
             $table->timestamps();
@@ -26,6 +27,6 @@ class CreateAlimentacoesTable extends Migration
     }
     public function down()
     {
-        Schema::dropIfExists('alimentacoes');
+        Schema::dropIfExists('alimentos_consumidos');
     }
 }

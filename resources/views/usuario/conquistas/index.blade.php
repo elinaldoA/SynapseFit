@@ -13,8 +13,7 @@
                     <h2 class="text-lg font-semibold text-indigo-600">{{ $conquista->titulo }}</h2>
                     <p class="text-sm text-gray-600">{{ $conquista->descricao }}</p>
                     <p class="text-xs text-gray-400 mt-2">Desbloqueada em {{ $conquista->created_at->format('d/m/Y') }}</p>
-                    <a class="btn btn-sm btn-info" href="{{ route('ranking') }}">Ver ranking</a>
-                </div>
+                </div><br/>
             @endforeach
         </div>
     @endif

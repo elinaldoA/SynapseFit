@@ -16,5 +16,6 @@ class DatabaseSeeder extends Seeder
         $this->call(AdminSubscriptionSeeder::class);
         $this->call(ExerciseSeeder::class);
         $this->call(WorkoutSeeder::class);
+        $this->call(AlimentosSeeder::class);
     }
 }

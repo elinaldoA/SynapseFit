@@ -5,14 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Alimentacao extends Model
+class Alimento extends Model
 {
     use HasFactory;
 
-    protected $table = "alimentacoes";
-
     protected $fillable = [
-        'user_id',
+        'nome',
         'refeicao',
         'calorias',
         'proteinas',
@@ -23,15 +21,12 @@ class Alimentacao extends Model
         'sodio',
         'descricao',
         'data',
+        'porcao',
     ];
 
-    public function user()
+    // Se quiser, pode criar um relacionamento com AlimentoConsumido
+    public function consumos()
     {
-        return $this->belongsTo(User::class);
-    }
-
-    public static function refeicoesPadrao()
-    {
-        return ['café', 'almoço', 'lanche', 'jantar'];
+        return $this->hasMany(AlimentoConsumido::class);
     }
 }

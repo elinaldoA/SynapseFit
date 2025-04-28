@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Achievement;
+use App\Models\AlimentoConsumido;
 use App\Models\WorkoutProgress;
 use App\Models\Alimentacao;
 use App\Models\Hidratacao;
@@ -110,14 +111,14 @@ class AchievementService
     private function checkAlimentacaoAchievements($user)
     {
         // Verificar se registrou a primeira refeição
-        $temPrimeiraRefeicao = Alimentacao::where('user_id', $user->id)->exists();
+        $temPrimeiraRefeicao = AlimentoConsumido::where('user_id', $user->id)->exists();
         if ($temPrimeiraRefeicao && !Achievement::where('user_id', $user->id)->where('slug', 'primeira-refeicao')->exists()) {
             return true;
         }
 
         // Verificar se registrou 3 refeições no dia
         $hoje = Carbon::today();
-        $refeicoesHoje = Alimentacao::where('user_id', $user->id)
+        $refeicoesHoje = AlimentoConsumido::where('user_id', $user->id)
             ->whereDate('data', $hoje)
             ->count();
         if ($refeicoesHoje >= 3 && !Achievement::where('user_id', $user->id)->where('slug', '3-refeicoes-dia')->exists()) {
@@ -128,7 +129,7 @@ class AchievementService
         $refeicoesSeguidas = 0;
         for ($i = 0; $i < 7; $i++) {
             $dia = now()->subDays($i)->toDateString();
-            $temRefeicao = Alimentacao::where('user_id', $user->id)
+            $temRefeicao = AlimentoConsumido::where('user_id', $user->id)
                 ->whereDate('data', $dia)
                 ->exists();
 
@@ -151,7 +152,7 @@ class AchievementService
         $refeicoesCompletasSeguidas = 0;
         for ($i = 0; $i < 7; $i++) {
             $dia = now()->subDays($i)->toDateString();
-            $temRefeicaoCompleta = Alimentacao::where('user_id', $user->id)
+            $temRefeicaoCompleta = AlimentoConsumido::where('user_id', $user->id)
                 ->whereDate('data', $dia)
                 ->exists();
 
@@ -228,19 +229,19 @@ class AchievementService
         $refeicoesCompletasPor7Dias = 0;
         for ($i = 0; $i < 7; $i++) {
             $dia = now()->subDays($i)->toDateString();
-            $temCafé = Alimentacao::where('user_id', $user->id)
+            $temCafé = AlimentoConsumido::where('user_id', $user->id)
                 ->whereDate('data', $dia)
                 ->where('refeicao', 'café')
                 ->exists();
-            $temAlmoço = Alimentacao::where('user_id', $user->id)
+            $temAlmoço = AlimentoConsumido::where('user_id', $user->id)
                 ->whereDate('data', $dia)
                 ->where('refeicao', 'almoço')
                 ->exists();
-            $temLanche = Alimentacao::where('user_id', $user->id)
+            $temLanche = AlimentoConsumido::where('user_id', $user->id)
                 ->whereDate('data', $dia)
                 ->where('refeicao', 'lanche')
                 ->exists();
-            $temJantar = Alimentacao::where('user_id', $user->id)
+            $temJantar = AlimentoConsumido::where('user_id', $user->id)
                 ->whereDate('data', $dia)
                 ->where('refeicao', 'jantar')
                 ->exists();
@@ -261,13 +262,22 @@ class AchievementService
 
     protected function giveAchievementOnce($user, $slug, $titulo, $descricao, $pontos, $tipo)
     {
-        Achievement::create([
-            'user_id' => $user->id,
-            'slug' => $slug,
-            'titulo' => $titulo,
-            'descricao' => $descricao,
-            'pontos' => $pontos,
-            'tipo' => $tipo
-        ]);
+        // Verificar se a conquista já existe para o usuário
+        $existingAchievement = Achievement::where('user_id', $user->id)
+            ->where('slug', $slug)
+            ->first();
+
+        if (!$existingAchievement) {
+            // Só cria a conquista se não existir
+            Achievement::create([
+                'user_id' => $user->id,
+                'slug' => $slug,
+                'titulo' => $titulo,
+                'descricao' => $descricao,
+                'pontos' => $pontos,
+                'tipo' => $tipo
+            ]);
+        }
     }
+
 }

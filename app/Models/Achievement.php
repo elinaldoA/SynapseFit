@@ -16,7 +16,6 @@ class Achievement extends Model
         'descricao',
     ];
 
-    // Definir a relação com o modelo User (muitos para um)
     public function user()
     {
         return $this->belongsTo(User::class);

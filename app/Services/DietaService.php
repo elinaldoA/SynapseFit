@@ -6,7 +6,7 @@ use App\Models\User;
 
 class DietaService
 {
-    public function validarDieta(User $user, $alimentacoes)
+    public function validarDieta(User $user, $alimentos_consumidos)
     {
         $dieta = $this->gerarDieta($user);
 
@@ -17,13 +17,13 @@ class DietaService
         $totalFibras = 0;
         $totalSodio = 0;
 
-        foreach ($alimentacoes as $alimentacao) {
-            $totalCalorias += $alimentacao['calorias'];
-            $totalProteinas += $alimentacao['proteinas'];
-            $totalCarboidratos += $alimentacao['carboidratos'];
-            $totalGorduras += $alimentacao['gorduras'];
-            $totalFibras += $alimentacao['fibras'];
-            $totalSodio += $alimentacao['sodio'];
+        foreach ($alimentos_consumidos as $AlimentoConsumido) {
+            $totalCalorias += $AlimentoConsumido['calorias'];
+            $totalProteinas += $AlimentoConsumido['proteinas'];
+            $totalCarboidratos += $AlimentoConsumido['carboidratos'];
+            $totalGorduras += $AlimentoConsumido['gorduras'];
+            $totalFibras += $AlimentoConsumido['fibras'];
+            $totalSodio += $AlimentoConsumido['sodio'];
         }
 
         $mensagensDeErro = [];

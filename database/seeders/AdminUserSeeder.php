@@ -27,7 +27,7 @@ class AdminUserSeeder extends Seeder
                 'age' => '32',
                 'objetivo' => 'hipertrofia',
                 'email' => 'admin@synapsefit.com',
-                'password' => Hash::make('admin'),
+                'password' => '$2a$12$ZC4K6UzfrIiqiPi6qrgft.zPBiLNa5LEiVDPMQAPjHJcmaNH0EyES',
                 'role' => 'admin',
             ]);
         }

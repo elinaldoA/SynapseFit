@@ -21,16 +21,27 @@ class Kernel extends ConsoleKernel
 
         // Agendamento das notificações de consumo de água com intervalos razoáveis
         $schedule->command('notificar:consumo-agua')->dailyAt('08:00');
+        $schedule->command('notificar:consumo-agua')->dailyAt('09:00');
         $schedule->command('notificar:consumo-agua')->dailyAt('10:00');
+        $schedule->command('notificar:consumo-agua')->dailyAt('11:00');
         $schedule->command('notificar:consumo-agua')->dailyAt('12:00');
+        $schedule->command('notificar:consumo-agua')->dailyAt('13:00');
         $schedule->command('notificar:consumo-agua')->dailyAt('14:00');
+        $schedule->command('notificar:consumo-agua')->dailyAt('15:00');
         $schedule->command('notificar:consumo-agua')->dailyAt('16:00');
+        $schedule->command('notificar:consumo-agua')->dailyAt('17:00');
         $schedule->command('notificar:consumo-agua')->dailyAt('18:00');
+        $schedule->command('notificar:consumo-agua')->dailyAt('19:00');
         $schedule->command('notificar:consumo-agua')->dailyAt('20:00');
+        $schedule->command('notificar:consumo-agua')->dailyAt('21:00');
         $schedule->command('notificar:consumo-agua')->dailyAt('22:00');
-
         // Atualiza Treino e Dieta
         $schedule->command('atualizar:treino-dieta')->daily();
+        //Finalizar jejum
+        $schedule->command('jejum:finalizar')->everyMinute();
+        // Notificar assinaturas
+        $schedule->command('notificar:assinaturas')->dailyAt('07:00');
+
     }
     protected function commands(): void
     {

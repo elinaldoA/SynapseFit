@@ -67,8 +67,15 @@
                     </a>
                 </li>
 
-                <li class="nav-item {{ Nav::isRoute('alimentacao') }}">
-                    <a class="nav-link" href="{{ route('alimentacao') }}">
+                <li class="nav-item {{ Nav::isRoute('jejuns') }}">
+                    <a class="nav-link" href="{{ route('jejum.index') }}">
+                        <i class="fas fa-fw fa-clock"></i>
+                        <span>{{ __('Jejuns') }}</span>
+                    </a>
+                </li>
+
+                <li class="nav-item {{ Nav::isRoute('alimento_consumidos') }}">
+                    <a class="nav-link" href="{{ route('alimento_consumidos') }}">
                         <i class="fas fa-fw fa-utensils"></i>
                         <span>{{ __('Dietas') }}</span>
                     </a>
@@ -94,6 +101,20 @@
                         <span>{{ __('Conquistas') }}</span>
                     </a>
                 </li>
+
+                <li class="nav-item {{ Nav::isRoute('ranking') }}">
+                    <a class="nav-link" href="{{ route('ranking') }}">
+                        <i class="fas fa-fw fa-trophy"></i>
+                        <span>{{ __('Ranking') }}</span>
+                    </a>
+                </li>
+
+                <li class="nav-item {{ Nav::isRoute('chat') }}">
+                    <a class="nav-link" href="{{ route('chat.index') }}">
+                        <i class="fas fa-fw fa-message"></i>
+                        <span>{{ __('Chat') }}</span>
+                    </a>
+                </li>
             @elseif(Auth::user()->role === 'admin')
                 <!-- Menu para ADMINISTRADOR -->
                 <div class="sidebar-heading">
@@ -104,6 +125,20 @@
                     <a class="nav-link" href="{{ route('usuarios') }}">
                         <i class="fas fa-fw fa-users"></i>
                         <span>{{ __('Usuários') }}</span>
+                    </a>
+                </li>
+
+                <li class="nav-item {{ Nav::isRoute('assinaturas') }}">
+                    <a class="nav-link" href="{{ route('assinaturas') }}">
+                        <i class="fas fa-fw fa-wallet"></i>
+                        <span>{{ __('Assinaturas') }}</span>
+                    </a>
+                </li>
+
+                <li class="nav-item {{ Nav::isRoute('alimentos') }}">
+                    <a class="nav-link" href="{{ route('alimentos') }}">
+                        <i class="fas fa-fw fa-utensils"></i>
+                        <span>{{ __('Alimentos') }}</span>
                     </a>
                 </li>
 

@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\Administrador\AlimentosController;
+use App\Http\Controllers\Administrador\AssinaturaController;
+use App\Http\Controllers\Administrador\DesafioController;
 use App\Http\Controllers\Administrador\ExerciseController;
 use App\Http\Controllers\Administrador\FinanceiroController;
 use App\Http\Controllers\Administrador\UserController;
@@ -10,12 +13,13 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Usuario\AchievementController;
-use App\Http\Controllers\Usuario\AlimentacaoController;
+use App\Http\Controllers\Usuario\AlimentoConsumidoController;
 use App\Http\Controllers\Usuario\WorkoutController;
 use App\Http\Controllers\Usuario\HidratacaoController;
+use App\Http\Controllers\Usuario\JejumController;
 use App\Http\Controllers\Usuario\PlanoController;
 use App\Http\Controllers\Usuario\RankingController;
-use App\Http\Controllers\Usuario\TalkfitController;
+use App\Http\Controllers\Usuario\UsuarioDesafioController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -49,12 +53,19 @@ Route::middleware(['auth', 'check.subscription'])->group(function () {
     Route::get('/workouts/export', [WorkoutController::class, 'exportToPdf'])->name('workouts.export');
 
     // ROTAS DE ALIMENTAÇÃO
-    Route::get('/alimentacao', [AlimentacaoController::class, 'index'])->name('alimentacao');
-    Route::get('/alimentacao/create', [AlimentacaoController::class, 'create'])->name('alimentacao.create');
-    Route::post('/alimentacao', [AlimentacaoController::class, 'store'])->name('alimentacao.store');
-    Route::get('/alimentacao/{alimentacao}/edit', [AlimentacaoController::class, 'edit'])->name('alimentacao.edit');
-    Route::put('/alimentacao/{alimentacao}', [AlimentacaoController::class, 'update'])->name('alimentacao.update');
-    Route::delete('/alimentacao/{alimentacao}', [AlimentacaoController::class, 'destroy'])->name('alimentacao.destroy');
+    Route::get('/alimentoConsumido', [AlimentoConsumidoController::class, 'index'])->name('alimento_consumidos');
+    Route::get('/alimentoConsumido/create', [AlimentoConsumidoController::class, 'create'])->name('alimento_consumidos.create');
+    Route::post('/alimentoConsumido', [AlimentoConsumidoController::class, 'store'])->name('alimento_consumidos.store');
+    Route::get('/alimentoConsumido/{AlimentoConsumido}/edit', [AlimentoConsumidoController::class, 'edit'])->name('alimento_consumidos.edit');
+    Route::put('/alimentoConsumido/{AlimentoConsumido}', [AlimentoConsumidoController::class, 'update'])->name('alimento_consumidos.update');
+    Route::delete('/alimentoConsumido/{AlimentoConsumido}', [AlimentoConsumidoController::class, 'destroy'])->name('alimento_consumidos.destroy');
+    //JEJUM
+    Route::resource('jejum', JejumController::class)->only([
+        'index', 'create', 'store','destroy'
+    ]);
+
+    Route::put('/jejum/toggle', [JejumController::class, 'toggle'])->name('jejum.toggle');
+
     // ROTAS DE HIDRATAÇÃO
     Route::get('/hidratacao', [HidratacaoController::class, 'index'])->name('hidratacao');
     Route::get('/hidratacao/create', [HidratacaoController::class, 'create'])->name('hidratacao.create');
@@ -70,6 +81,17 @@ Route::middleware(['auth', 'check.subscription'])->group(function () {
     Route::get('/administrador/usuarios/{usuario}/edit', [UserController::class, 'edit'])->name('usuarios.edit');
     Route::put('/administrador/usuarios/{usuario}', [UserController::class, 'update'])->name('usuarios.update');
     Route::delete('/administrador/usuarios/{usuario}', [UserController::class, 'destroy'])->name('usuarios.destroy');
+    //LISTAGEM ASSINATURAS DE USUÁRIOS
+    Route::get('/administrador/assinaturas/index', [AssinaturaController::class, 'index'])->name('assinaturas');
+    Route::post('/administrador/assinaturas/{id}/renovar', [AssinaturaController::class, 'renovar'])->name('assinaturas.renovar');
+    Route::post('/administrador/assinaturas/{id}/cancelar', [AssinaturaController::class, 'cancelar'])->name('assinaturas.cancelar');
+    //LISTAGEM DE ALIMENTOS
+    Route::get('/administrador/alimentos/index', [AlimentosController::class, 'index'])->name('alimentos');
+    Route::get('/administrador/alimentos/create', [AlimentosController::class, 'create'])->name('alimentos.create');
+    Route::post('/administrador/alimentos', [AlimentosController::class, 'store'])->name('alimentos.store');
+    Route::get('/administrador/alimentos/{alimento}/edit', [AlimentosController::class, 'edit'])->name('alimentos.edit');
+    Route::put('/administrador/alimentos/{alimento}', [AlimentosController::class, 'update'])->name('alimentos.update');
+    Route::delete('/administrador/alimentos/{alimento}', [AlimentosController::class, 'destroy'])->name('alimentos.destroy');
     //LISTAGEM DE EXERCICIOS
     Route::get('/administrador/exercicios/index', [ExerciseController::class, 'index'])->name('exercicios');
     Route::get('/administrador/exercicios/create', [ExerciseController::class, 'create'])->name('exercicios.create');

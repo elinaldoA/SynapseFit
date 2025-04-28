@@ -7,35 +7,59 @@ use App\Helpers\NivelHelper;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class RankingController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        // Recupera os 10 primeiros usuários, ordenados por pontos
-        $usuarios = User::orderBy('pontos', 'desc')->take(10)->get();
-
         $usuarioAtual = Auth::user();
-        $posicao = $usuarios->search(function ($usuario) use ($usuarioAtual) {
-            return $usuario->id === $usuarioAtual->id;
-        });
+        $periodo = $request->query('periodo', 'geral'); // Padrão para 'geral'
 
-        // Filtra os usuários removendo os com role 'admin'
-        $usuarios = $usuarios->filter(function ($usuario) {
-            return $usuario->role !== 'admin'; // Exclui usuários com role 'admin'
-        });
+        // Definir a consulta inicial (geral: todos os usuários)
+        $query = User::where('role', '!=', 'admin');
 
-        // Adiciona o nível para todos os usuários restantes
-        foreach ($usuarios as $usuario) {
+        // Filtragem por período
+        if ($periodo == 'mensal') {
+            $query->where('created_at', '>=', Carbon::now()->subMonth()); // Últimos 30 dias
+        } elseif ($periodo == 'semanal') {
+            $query->where('created_at', '>=', Carbon::now()->subWeek()); // Últimos 7 dias
+        }
+
+        // Obter os 10 usuários com mais pontos (filtrados pelo período)
+        $usuarios = $query->orderBy('pontos', 'desc')->take(10)->get();
+
+        // Adicionar nível aos usuários
+        $usuarios->each(function ($usuario) {
             $usuario->nivel = NivelHelper::getNivel($usuario->pontos);
-        }
+        });
 
-        // Se a posição do usuário atual foi encontrada, converte de zero-based para one-based
+        // Determinar a posição do usuário atual
+        $posicao = $usuarios->search(fn($usuario) => $usuario->id === $usuarioAtual->id);
         if ($posicao !== false) {
-            $posicao = $posicao + 1;
+            $posicao += 1;
+        } else {
+            $posicao = null;
         }
 
-        // Retorna a view com os dados necessários
-        return view('usuario.ranking.index', compact('usuarios', 'usuarioAtual', 'posicao'));
+        // Obter o nível atual do usuário
+        $nivelAtual = NivelHelper::getNivel($usuarioAtual->pontos);
+
+        // Calcular o próximo nível, se houver
+        $proximoNivel = null;
+        if ($nivelAtual && !empty($nivelAtual['proximo'])) {
+            $faltam = $nivelAtual['proximo']['pontos_minimos'] - $usuarioAtual->pontos;
+            $totalNivel = max($nivelAtual['proximo']['pontos_minimos'] - $nivelAtual['pontos_minimos'], 1);
+            $percentual = intval((($usuarioAtual->pontos - $nivelAtual['pontos_minimos']) / $totalNivel) * 100);
+
+            $proximoNivel = [
+                'nome' => $nivelAtual['proximo']['nome'],
+                'faltam' => max($faltam, 0),
+                'percentual' => min(max($percentual, 0), 100),
+            ];
+        }
+
+        // Retornar a view com os dados filtrados
+        return view('usuario.ranking.index', compact('usuarios', 'usuarioAtual', 'posicao', 'proximoNivel', 'periodo'));
     }
 }

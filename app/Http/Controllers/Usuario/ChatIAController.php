@@ -67,7 +67,7 @@ class ChatIAController extends Controller
         $user           = Auth::user();
         $bio            = $user->bioimpedance()->latest()->first();
         $dieta          = $user->dieta;
-        $alimentacao    = $user->alimentacoes()->whereDate('created_at', today())->get();
+        $AlimentoConsumido    = $user->alimentos_consumidos()->whereDate('created_at', today())->get();
         $aguaConsumida  = $user->aguaConsumida()->whereDate('registrado_em', today())->sum('quantidade');
         $suplementos    = $user->suplementos ?? [];
         $pergunta       = strtolower(trim($pergunta));
@@ -86,13 +86,13 @@ class ChatIAController extends Controller
             if ($this->verificarPalavraChave($pergunta, $chaves)) {
                 switch ($tipo) {
                     case 'alimentação':
-                        return $this->respostaAlimentacao($user, $dieta, $alimentacao, $aguaConsumida, $suplementos);
+                        return $this->respostaAlimentoConsumido($user, $dieta, $AlimentoConsumido, $aguaConsumida, $suplementos);
                     case 'água':
                         return $this->respostaAgua($aguaConsumida, $dieta);
                     case 'treino':
                         return $this->respostaTreino($user);
                     case 'dieta':
-                        return $this->respostaDieta($dieta, $alimentacao, $aguaConsumida);
+                        return $this->respostaDieta($dieta, $AlimentoConsumido, $aguaConsumida);
                     case 'bioimpedância':
                         return $this->respostaBioimpedancia($bio);
                     case 'motivação':
@@ -122,7 +122,7 @@ class ChatIAController extends Controller
         return false;
     }
 
-    private function respostaAlimentacao($user, $dieta, $alimentacao, $aguaConsumida, $suplementos)
+    private function respostaAlimentoConsumido($user, $dieta, $AlimentoConsumido, $aguaConsumida, $suplementos)
     {
         if (!$dieta) return "❗ Você ainda não possui uma dieta cadastrada.";
 
@@ -144,9 +144,9 @@ class ChatIAController extends Controller
         $resposta .= "- Sódio: {$dieta->sodio} mg\n";
         $resposta .= "- Água: {$dieta->agua} ml\n\n";
 
-        if ($alimentacao->count()) {
+        if ($AlimentoConsumido->count()) {
             $resposta .= "📌 **Hoje você comeu:**\n";
-            foreach ($alimentacao as $refeicao) {
+            foreach ($AlimentoConsumido as $refeicao) {
                 $resposta .= "- {$refeicao->tipo}: {$refeicao->nome} ({$refeicao->calorias} kcal)\n";
                 foreach (array_keys($totais) as $macro) {
                     $totais[$macro] += $refeicao->$macro;
@@ -222,7 +222,7 @@ class ChatIAController extends Controller
             ($aguaConsumida < $dieta->agua ? "🔔 Beba mais água!" : "✅ Parabéns pela hidratação!");
     }
 
-    private function respostaDieta($dieta, $alimentacao, $aguaConsumida)
+    private function respostaDieta($dieta, $AlimentoConsumido, $aguaConsumida)
     {
         if (!$dieta) return "📋 Nenhuma dieta cadastrada no momento.";
 

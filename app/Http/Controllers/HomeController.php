@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Alimento;
 use App\Models\User;
 use App\Models\Bioimpedance;
 use App\Models\Hidratacao;
 use App\Models\Dieta;
+use App\Models\Exercise;
 use App\Models\UserSubscription;
+use App\Models\Workout;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -23,6 +26,9 @@ class HomeController extends Controller
         $user = auth()->user();
 
         $users = User::count();
+        $alimentos = Alimento::count();
+        $exercicios = Exercise::count();
+        $treinos = Workout::count();
         $bioimpedancias = Bioimpedance::count();
         $dietas = Dieta::count();
 
@@ -31,6 +37,9 @@ class HomeController extends Controller
 
         $widget = [
             'users' => $users,
+            'alimentos' => $alimentos,
+            'exercicios' => $exercicios,
+            'treinos' => $treinos,
             'bioimpedancias' => $bioimpedancias,
             'dietas' => $dietas,
             'aguaLitros' => $totalLitros,

@@ -56,9 +56,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(Dieta::class);
     }
-    public function alimentacoes()
+    public function alimentos_consumidos()
     {
-        return $this->hasMany(Alimentacao::class);
+        return $this->hasMany(AlimentoConsumido::class);
     }
 
     public function aguaConsumida()
@@ -71,6 +71,10 @@ class User extends Authenticatable
         return $this->hasMany(\App\Models\Achievement::class);
     }
 
+    public function desafios()
+    {
+        return $this->belongsToMany(Desafio::class)->withPivot('progresso', 'inicio', 'fim')->withTimestamps();
+    }
 
     public function getFullNameAttribute()
     {
