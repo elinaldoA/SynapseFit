@@ -8,14 +8,12 @@ use App\Models\Bioimpedance;
 use App\Models\Hidratacao;
 use App\Models\Dieta;
 use App\Models\Exercise;
-<<<<<<< HEAD
 use App\Models\UserSubscription;
 use App\Models\Workout;
-=======
-use App\Models\Workout;
 use App\Models\WorkoutProgress;
->>>>>>> e911801 (Correções gerais)
 use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -88,6 +86,7 @@ class HomeController extends Controller
             $impedanciaSegmentos = 'Não disponível';
         }
 
+        // NOVO BLOCO: Evolução com base nos treinos e bioimpedância
         $evolucao = Bioimpedance::where('user_id', $user->id)
             ->orderBy('data_medicao')
             ->get()
@@ -126,7 +125,7 @@ class HomeController extends Controller
             'diasRestantes',
             'assinaturaAtiva',
             'evolucao',
-            'bioimpedance'
+            'bioimpedance' // <-- Adicionando à view
         ));
     }
 }

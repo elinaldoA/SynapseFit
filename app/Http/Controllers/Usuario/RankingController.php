@@ -14,24 +14,6 @@ class RankingController extends Controller
     public function index(Request $request)
     {
         $usuarioAtual = Auth::user();
-<<<<<<< HEAD
-        $periodo = $request->query('periodo', 'geral'); // Padrão para 'geral'
-
-        // Definir a consulta inicial (geral: todos os usuários)
-        $query = User::where('role', '!=', 'admin');
-
-        // Filtragem por período
-        if ($periodo == 'mensal') {
-            $query->where('created_at', '>=', Carbon::now()->subMonth()); // Últimos 30 dias
-        } elseif ($periodo == 'semanal') {
-            $query->where('created_at', '>=', Carbon::now()->subWeek()); // Últimos 7 dias
-        }
-
-        // Obter os 10 usuários com mais pontos (filtrados pelo período)
-        $usuarios = $query->orderBy('pontos', 'desc')->take(10)->get();
-
-        // Adicionar nível aos usuários
-=======
         $periodo = $request->query('periodo', 'geral');
 
         $query = User::where('role', '!=', 'admin');
@@ -44,15 +26,10 @@ class RankingController extends Controller
 
         $usuarios = $query->orderBy('pontos', 'desc')->take(10)->get();
 
->>>>>>> e911801 (Correções gerais)
         $usuarios->each(function ($usuario) {
             $usuario->nivel = NivelHelper::getNivel($usuario->pontos);
         });
 
-<<<<<<< HEAD
-        // Determinar a posição do usuário atual
-=======
->>>>>>> e911801 (Correções gerais)
         $posicao = $usuarios->search(fn($usuario) => $usuario->id === $usuarioAtual->id);
         if ($posicao !== false) {
             $posicao += 1;
@@ -60,15 +37,8 @@ class RankingController extends Controller
             $posicao = null;
         }
 
-<<<<<<< HEAD
-        // Obter o nível atual do usuário
         $nivelAtual = NivelHelper::getNivel($usuarioAtual->pontos);
 
-        // Calcular o próximo nível, se houver
-=======
-        $nivelAtual = NivelHelper::getNivel($usuarioAtual->pontos);
-
->>>>>>> e911801 (Correções gerais)
         $proximoNivel = null;
         if ($nivelAtual && !empty($nivelAtual['proximo'])) {
             $faltam = $nivelAtual['proximo']['pontos_minimos'] - $usuarioAtual->pontos;
@@ -82,10 +52,6 @@ class RankingController extends Controller
             ];
         }
 
-<<<<<<< HEAD
-        // Retornar a view com os dados filtrados
-=======
->>>>>>> e911801 (Correções gerais)
         return view('usuario.ranking.index', compact('usuarios', 'usuarioAtual', 'posicao', 'proximoNivel', 'periodo'));
     }
 }

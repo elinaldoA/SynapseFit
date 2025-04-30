@@ -19,37 +19,6 @@ class NivelHelper
                 'nome' => 'Intermediário', 'pontos_minimos' => 200
             ]);
         } elseif ($pontos >= 200 && $pontos < 300) {
-<<<<<<< HEAD
-            return self::makeNivel('Intermediário', 'Você está pegando o ritmo!', 'blue', 'fa-trophy', 200, [
-                'nome' => 'Avançado', 'pontos_minimos' => 300
-            ]);
-        } elseif ($pontos >= 300 && $pontos < 500) {
-            return self::makeNivel('Avançado', 'Você está indo muito bem!', 'purple', 'fa-bolt', 300, [
-                'nome' => 'Especialista', 'pontos_minimos' => 500
-            ]);
-        } elseif ($pontos >= 500 && $pontos < 750) {
-            return self::makeNivel('Especialista', 'Sua técnica é impressionante!', 'green', 'fa-medal', 500, [
-                'nome' => 'Pro', 'pontos_minimos' => 750
-            ]);
-        } elseif ($pontos >= 750 && $pontos < 1000) {
-            return self::makeNivel('Pro', 'Já é referência!', 'orange', 'fa-fire', 750, [
-                'nome' => 'Mestre', 'pontos_minimos' => 1000
-            ]);
-        } elseif ($pontos >= 1000 && $pontos < 1500) {
-            return self::makeNivel('Mestre', 'Você está dominando!', 'red', 'fa-trophy', 1000, [
-                'nome' => 'Lendário', 'pontos_minimos' => 1500
-            ]);
-        } elseif ($pontos >= 1500 && $pontos < 2000) {
-            return self::makeNivel('Lendário', 'Você inspira todos ao redor!', 'gold', 'fa-crown', 1500, [
-                'nome' => 'Deus do Fitness', 'pontos_minimos' => 2000
-            ]);
-        } elseif ($pontos >= 2000 && $pontos < 3000) {
-            return self::makeNivel('Deus do Fitness', 'Sua força é lendária!', 'silver', 'fa-gym', 2000, [
-                'nome' => 'Imortal', 'pontos_minimos' => 3000
-            ]);
-        } else {
-            return self::makeNivel('Imortal', 'Você é uma lenda viva!', 'platinum', 'fa-diamond', 3000);
-=======
             return self::makeNivel('Intermediário', 'Você está pegando o ritmo!', 'blue', 'fa-person-running', 200, [
                 'nome' => 'Ativo', 'pontos_minimos' => 300
             ]);
@@ -123,7 +92,6 @@ class NivelHelper
             ]);
         } else {
             return self::makeNivel('Lenda Absoluta', 'Seu nome será lembrado para sempre!', 'rainbow', 'fa-infinity', 20000);
->>>>>>> e911801 (Correções gerais)
         }
     }
 
