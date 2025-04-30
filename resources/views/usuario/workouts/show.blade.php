@@ -172,7 +172,7 @@
         </div>
     </div>
 
-    <!-- Modal de Parabéns -->
+    <!-- Modal de Parabéns-->
     <div class="modal fade" id="congratulationsModal" tabindex="-1" role="dialog"
         aria-labelledby="congratulationsModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-fullscreen" role="document">

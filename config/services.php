@@ -38,5 +38,10 @@ return [
     'usda' => [
         'key' => env('USDA_API_KEY'),
     ],
+    'vapid' => [
+        'public_key' => env('VAPID_PUBLIC_KEY'),
+        'private_key' => env('VAPID_PRIVATE_KEY'),
+        'subject' => env('VAPID_SUBJECT', 'naorespondalembrete2025@gmail.com'),
+    ],
 
 ];

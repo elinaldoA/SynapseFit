@@ -8,11 +8,14 @@ use App\Models\Bioimpedance;
 use App\Models\Hidratacao;
 use App\Models\Dieta;
 use App\Models\Exercise;
+<<<<<<< HEAD
 use App\Models\UserSubscription;
 use App\Models\Workout;
+=======
+use App\Models\Workout;
+use App\Models\WorkoutProgress;
+>>>>>>> e911801 (Correções gerais)
 use Carbon\Carbon;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -46,16 +49,15 @@ class HomeController extends Controller
         ];
 
         $assinaturaAtiva = $user->subscriptions()
-        ->where('is_active', true)
-        ->latest('end_date')
-        ->first();
+            ->where('is_active', true)
+            ->latest('end_date')
+            ->first();
 
         $diasRestantes = null;
 
         if ($assinaturaAtiva) {
             $hoje = Carbon::now()->startOfDay();
             $fim = Carbon::parse($assinaturaAtiva->end_date)->startOfDay();
-
             $diasRestantes = $hoje->diffInDays($fim, false);
         }
 
@@ -86,6 +88,25 @@ class HomeController extends Controller
             $impedanciaSegmentos = 'Não disponível';
         }
 
+        $evolucao = Bioimpedance::where('user_id', $user->id)
+            ->orderBy('data_medicao')
+            ->get()
+            ->map(function ($item) use ($user) {
+                $treinosRealizados = WorkoutProgress::where('user_id', $user->id)
+                    ->whereDate('data_treino', '<=', $item->data_medicao)
+                    ->count();
+
+                return [
+                    'data' => \Carbon\Carbon::parse($item->data_medicao)->format('d/m/Y'),
+                    'peso' => $item->peso,
+                    'massa_magra' => $item->massa_magra,
+                    'massa_gordura' => $item->massa_gordura,
+                    'imc' => $item->imc,
+                    'percentual_gordura' => $item->percentual_gordura,
+                    'treinos_realizados' => $treinosRealizados,
+                ];
+            });
+
         return view('home', compact(
             'imc',
             'percentualGordura',
@@ -102,7 +123,10 @@ class HomeController extends Controller
             'grauObesidade',
             'impedanciaSegmentos',
             'widget',
-            'diasRestantes', 'assinaturaAtiva'
+            'diasRestantes',
+            'assinaturaAtiva',
+            'evolucao',
+            'bioimpedance'
         ));
     }
 }

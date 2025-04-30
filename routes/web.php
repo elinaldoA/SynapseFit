@@ -2,7 +2,10 @@
 
 use App\Http\Controllers\Administrador\AlimentosController;
 use App\Http\Controllers\Administrador\AssinaturaController;
+<<<<<<< HEAD
 use App\Http\Controllers\Administrador\DesafioController;
+=======
+>>>>>>> e911801 (Correções gerais)
 use App\Http\Controllers\Administrador\ExerciseController;
 use App\Http\Controllers\Administrador\FinanceiroController;
 use App\Http\Controllers\Administrador\UserController;
@@ -11,6 +14,7 @@ use App\Http\Controllers\Usuario\ChatIAController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\NotificacaoController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Usuario\AchievementController;
 use App\Http\Controllers\Usuario\AlimentoConsumidoController;
@@ -19,7 +23,10 @@ use App\Http\Controllers\Usuario\HidratacaoController;
 use App\Http\Controllers\Usuario\JejumController;
 use App\Http\Controllers\Usuario\PlanoController;
 use App\Http\Controllers\Usuario\RankingController;
+<<<<<<< HEAD
 use App\Http\Controllers\Usuario\UsuarioDesafioController;
+=======
+>>>>>>> e911801 (Correções gerais)
 
 Route::get('/', function () {
     return view('welcome');
@@ -108,6 +115,8 @@ Route::middleware(['auth', 'check.subscription'])->group(function () {
     Route::delete('/administrador/treinos/{treino}', [WorkoutAdminController::class, 'destroy'])->name('treinos.destroy');
     //FINANCEIRO
     Route::get('/administrador/financeiro', [FinanceiroController::class, 'index'])->name('financeiro');
+    Route::post('/notificacoes/salvar', [NotificacaoController::class, 'salvar'])->name('notificacoes.salvar');
+    Route::get('/notificacoes/enviar', [NotificacaoController::class, 'enviar'])->name('notificacoes.enviar');
 
     Route::get('/notifications/mark-as-read/{id}', function ($id) {
         $notification = auth()->user()->unreadNotifications->find($id);
@@ -121,3 +130,4 @@ Route::middleware(['auth', 'check.subscription'])->group(function () {
         return redirect()->back();
     })->name('notifications.read.all');
 });
+

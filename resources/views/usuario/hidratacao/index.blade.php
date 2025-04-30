@@ -58,17 +58,15 @@
         </ul>
     </div>
 
-    <!-- Carregar as dependências do JustGage -->
     <script src="https://cdn.jsdelivr.net/npm/raphael@2.3.0/raphael.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/justgage@1.4.0/justgage.min.js"></script>
 
     <script>
-        // Obtendo o valor do percentual de hidratação
         var consumido = {{ $status['consumido_ml'] }};
         var meta = {{ $status['meta_ml'] }};
         var percentual = (consumido / meta) * 100;
 
-        // Criando o velocímetro com JustGage
+
         var g = new JustGage({
             id: "velocimetro",
             value: percentual,
@@ -76,13 +74,13 @@
             max: 100,
             title: "Progresso de Hidratação",
             label: "%",
-            levelColors: ["#ff0000", "#ffff00", "#00ff00"], // Definindo cores para diferentes níveis
+            levelColors: ["#ff0000", "#ffff00", "#00ff00"],
             gaugeWidthScale: 0.1,
             pointer: true,
             customSectors: [
-                { lo: 0, hi: 50, color: "#ff0000" },   // Vermelho para menos de 50%
-                { lo: 51, hi: 75, color: "#ffff00" },  // Amarelo para 51% a 75%
-                { lo: 76, hi: 100, color: "#00ff00" }  // Verde para 76% a 100%
+                { lo: 0, hi: 50, color: "#ff0000" },
+                { lo: 51, hi: 75, color: "#ffff00" },
+                { lo: 76, hi: 100, color: "#00ff00" }
             ]
         });
     </script>

@@ -98,7 +98,7 @@
 
         <section class="bg-slate-950 py-20 px-6" id="treinos" data-aos="fade-up">
             <div class="text-center text-white mb-12">
-                <h2 class="text-4xl font-bold text-blue-400">+500 Treinos Inteligentes</h2>
+                <h2 class="text-4xl font-bold text-blue-400">+800 Treinos Inteligentes</h2>
                 <p class="text-gray-300 mt-4 text-lg">Seu treino nunca mais será o mesmo. Evolua constantemente com treinos que se adaptam a você.</p>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-7xl mx-auto">

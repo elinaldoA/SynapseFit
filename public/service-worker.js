@@ -7,7 +7,6 @@ self.addEventListener('install', (event) => {
           '/js/app.js',
           '/icons/icon-192.png',
           '/icons/icon-512.png',
-          // Adicione outros recursos que deseja armazenar no cache
         ]);
       })
     );

@@ -56,10 +56,24 @@ class WorkoutController extends Controller
         $pontos = Achievement::where('user_id', $user->id)->count() * 50;
         $nivel = NivelHelper::getNivel($pontos);
 
+        // 👉 Adicionado: buscar toda a evolução do usuário
+        $evolucaoCompleta = WorkoutProgress::with(['workout.exercise'])
+            ->where('user_id', $user->id)
+            ->orderBy('data_treino', 'asc')
+            ->get();
+
         return view('usuario.workouts.index', compact(
-            'workouts', 'currentTag', 'nextTag', 'bloqueadoHoje', 'tipoLiberado', 'pontos', 'nivel'
+            'workouts',
+            'currentTag',
+            'nextTag',
+            'bloqueadoHoje',
+            'tipoLiberado',
+            'pontos',
+            'nivel',
+            'evolucaoCompleta'
         ));
     }
+
 
     public function show($type)
     {

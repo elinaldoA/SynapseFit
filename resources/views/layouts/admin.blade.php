@@ -19,10 +19,16 @@
     <!-- Favicon -->
     <link href="{{ asset('img/favicon.ico') }}" rel="icon" type="image/png">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <audio id="notification-sound" src="{{ asset('audio/mensagem.mp3') }}" preload="auto"></audio>
 </head>
 
 <body id="page-top">
-
+    <div id="loading-spinner"
+        style="display: none; justify-content: center; align-items: center; position: fixed; inset: 0; background: rgba(255, 255, 255, 0.8); z-index: 9999;">
+        <!--<i class="fas fa-dumbbell fw-fa-2x" style="font-size: 3rem; color: #007bff;"></i>-->
+        <img src="{{ asset('img/logo.png') }}" height="100" width="100" style="font-size: 3rem; color: #007bff;">
+        <p class="mt-3 font-weight-bold text-center">Aguarde...</p>
+    </div>
     <!-- Page Wrapper -->
     <div id="wrapper">
         <!-- Sidebar -->
@@ -177,27 +183,7 @@
                         <i class="fa fa-bars"></i>
                     </button>
                     <ul class="navbar-nav ml-auto">
-                        <li class="nav-item dropdown no-arrow d-sm-none">
-                            <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-search fa-fw"></i>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
-                                aria-labelledby="searchDropdown">
-                                <form class="form-inline mr-auto w-100 navbar-search">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control bg-light border-0 small"
-                                            placeholder="Search for..." aria-label="Search"
-                                            aria-describedby="basic-addon2">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-primary" type="button">
-                                                <i class="fas fa-search fa-sm"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </li>
+                        <!-- Notificação de Alerta -->
                         <li class="nav-item dropdown no-arrow mx-1">
                             <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -250,25 +236,6 @@
                                         </a>
                                     </div>
                                 @endif
-                            </div>
-                        </li>
-                        <div class="topbar-divider d-none d-sm-block"></div>
-                        <li class="nav-item dropdown no-arrow">
-                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span
-                                    class="mr-2 d-none d-lg-inline text-gray-600 small">{{ Auth::user()->name }}</span>
-                                <figure class="img-profile rounded-circle avatar font-weight-bold"
-                                    data-initial="{{ Auth::user()->name[0] }}"></figure>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                                aria-labelledby="userDropdown">
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#" data-toggle="modal"
-                                    data-target="#logoutModal">
-                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    {{ __('Logout') }}
-                                </a>
                             </div>
                         </li>
                     </ul>
@@ -332,10 +299,15 @@
             </div>
         </div>
     </div>
+    <!-- Vendor JS -->
     <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset('vendor/bootstrap/js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('vendor/jquery-easing/jquery.easing.min.js') }}"></script>
+
+    <!-- Template JS -->
     <script src="{{ asset('js/sb-admin-2.min.js') }}"></script>
+
+    <!-- Comportamento: esconder alertas -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             setTimeout(function() {
@@ -346,12 +318,100 @@
             }, 5000);
         });
     </script>
+
+    <!-- Comportamento: recarregar página a cada 150s -->
     <script>
         window.addEventListener('load', function() {
             setInterval(function() {
                 window.location.reload(true);
             }, 150000);
         });
+    </script>
+
+    <!-- Estilos para animações -->
+    <style>
+        #loading-spinner {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: rgba(255, 255, 255, 0.9);
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        #loading-spinner i {
+            font-size: 3rem;
+            color: #007bff;
+            animation: spin 1s linear infinite;
+        }
+
+        #loading-spinner p {
+            margin-top: 1rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .spin {
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+
+    <!-- Comportamento: loading spinner -->
+    <script>
+        window.addEventListener('load', function() {
+            const spinner = document.getElementById('loading-spinner');
+            spinner.style.opacity = '0';
+            setTimeout(() => spinner.style.display = 'none', 700);
+        });
+
+        window.addEventListener('beforeunload', function() {
+            const spinner = document.getElementById('loading-spinner');
+            spinner.style.display = 'flex';
+            spinner.style.opacity = '1';
+
+            // Garante a animação do ícone
+            const icon = spinner.querySelector('i');
+            if (icon) icon.classList.add('spin');
+        });
+
+        function playNotificationSound() {
+            var audio = document.getElementById('notification-sound');
+            audio.play();
+        }
+
+        // Função para verificar as notificações a cada 5 segundos
+        setInterval(function() {
+            var unreadCount = {{ auth()->user()->unreadNotifications->count() }};
+
+            // Se o número de notificações não lidas for maior que zero, toca o som
+            if (unreadCount > 0) {
+                playNotificationSound();
+            }
+        }, 5000);
     </script>
 </body>
 
