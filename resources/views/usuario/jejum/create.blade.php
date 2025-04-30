@@ -17,14 +17,10 @@
                     <label for="protocolo" class="form-label">Protocolo de Jejum</label>
                     <select name="protocolo" class="form-control" required>
                         <option value="">Selecione um protocolo</option>
-<<<<<<< HEAD
-                        @foreach (['12:12', '14:10', '16:8', '18:6', '24:0'] as $value)
-=======
                         @foreach (['16:8' => '16h de jejum, 8h de alimentação',
                                 '18:6' => '18h de jejum, 6h de alimentação',
                                 '20:4' => '20h de jejum, 4h de alimentação',
                                 'OMAD' => '1 refeição por dia (jejum de 23h)'] as $value)
->>>>>>> e911801 (Correções gerais)
                             <option value="{{ $value }}" {{ old('protocolo') == $value ? 'selected' : '' }}>
                                 {{ $value == '24:0' ? 'OMAD (24h)' : $value }}
                             </option>
@@ -125,18 +121,9 @@
 
         <!-- Ações -->
         <div class="d-flex justify-content-end gap-2">
-<<<<<<< HEAD
-            <button type="submit" class="btn btn-primary px-4">
-                <i class="fas fa-check me-2"></i>Criar Plano
-            </button>
-            <a href="{{ route('jejum.index') }}" class="btn btn-outline-secondary px-4">
-                Cancelar
-            </a>
-=======
             <button type="submit" class="btn btn-primary px-4 m-1">
                 <i class="fas fa-check me-2"></i></button>
             <a href="{{ route('jejum.index') }}" class="btn btn-outline-secondary px-4 m-1"><i class="fa fa-angle-left"></i></a>
->>>>>>> e911801 (Correções gerais)
         </div>
     </form>
 </div>

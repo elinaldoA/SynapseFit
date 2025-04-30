@@ -428,38 +428,3 @@
         </script>
     @endif
 @endsection
-<!--<script>
-    const publicKey = '{{ config('services.vapid.public_key') }}';
-
-    async function subscribeUser() {
-        if ('serviceWorker' in navigator && 'PushManager' in window) {
-            const register = await navigator.serviceWorker.register('/sw.js');
-
-            const subscription = await register.pushManager.subscribe({
-                userVisibleOnly: true,
-                applicationServerKey: urlBase64ToUint8Array(publicKey)
-            });
-
-            await fetch("{{ route('notificacoes.salvar') }}", {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                body: JSON.stringify(subscription)
-            });
-        }
-    }
-
-    function urlBase64ToUint8Array(base64String) {
-        const padding = '='.repeat((4 - base64String.length % 4) % 4);
-        const base64 = (base64String + padding)
-            .replace(/-/g, '+')
-            .replace(/_/g, '/');
-
-        const rawData = window.atob(base64);
-        return Uint8Array.from([...rawData].map(char => char.charCodeAt(0)));
-    }
-
-    subscribeUser();
-</script>-->

@@ -39,28 +39,17 @@
                             <td>{{ \Carbon\Carbon::parse($assinatura->end_date)->format('d/m/Y') }}</td>
                             <td>{{ $assinatura->dias_restantes }} dias</td>
                             <td>
-<<<<<<< HEAD
-                                <div class="d-flex justify-content-center gap-1">
-                                    <form action="{{ route('assinaturas.renovar', $assinatura->id) }}" method="POST" onsubmit="return confirm('Deseja renovar esta assinatura?')">
-                                        @csrf
-                                        <button class="btn btn-sm btn-success" title="Renovar">
-=======
                                 <div class="d-flex justify-content-end gap-2">
                                     <form action="{{ route('assinaturas.renovar', $assinatura->id) }}" method="POST" onsubmit="return confirm('Deseja renovar esta assinatura?')">
                                         @csrf
                                         <button class="btn btn-sm btn-success px-4 m-1" title="Renovar">
->>>>>>> e911801 (Correções gerais)
                                             <i class="fa fa-sync-alt"></i>
                                         </button>
                                     </form>
 
                                     <form action="{{ route('assinaturas.cancelar', $assinatura->id) }}" method="POST" onsubmit="return confirm('Deseja cancelar esta assinatura?')">
                                         @csrf
-<<<<<<< HEAD
-                                        <button class="btn btn-sm btn-danger" title="Cancelar">
-=======
                                         <button class="btn btn-sm btn-danger px-4 m-1" title="Cancelar">
->>>>>>> e911801 (Correções gerais)
                                             <i class="fa fa-times"></i>
                                         </button>
                                     </form>

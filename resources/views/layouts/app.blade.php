@@ -17,12 +17,8 @@
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
-
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <script>
-        const VAPID_PUBLIC_KEY = "{{ config('services.vapid.public_key') }}";
-    </script>
 </head>
 <body>
     <div id="app">
