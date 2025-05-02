@@ -67,7 +67,8 @@
                             value="{{ \Carbon\Carbon::today()->toDateString() }}" required>
                     </div>
 
-                    <button type="submit" class="btn btn-success">Salvar</button>
+                    <button type="submit" class="btn btn-success"><i class="fas fa-save"></i></button>
+                    <a href="{{ route('alimento_consumidos')}}" class="btn btn-info"><i class="fas fa-angle-left"></i></a>
                 </form>
             </div>
         </div>

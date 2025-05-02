@@ -8,8 +8,8 @@
             <form method="POST" action="{{ route('exercicios.store') }}">
                 @csrf
                 @include('administrador.exercicios.form')
-                <button type="submit" class="btn btn-success">Salvar</button>
-                <a href="{{ route('exercicios') }}" class="btn btn-secondary">Cancelar</a>
+                <button type="submit" class="btn btn-success"><i class="fas fa-save"></i></button>
+                <a href="{{ route('exercicios') }}" class="btn btn-info"><i class="fas fa-angle-left"></i></a>
             </form>
         </div>
     </div>

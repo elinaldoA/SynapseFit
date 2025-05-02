@@ -63,7 +63,7 @@
             <input type="date" class="form-control" name="data_treino" id="data_treino" value="{{ $treino->data_treino }}">
         </div>
 
-        <button type="submit" class="btn btn-primary">Atualizar</button>
-        <a href="{{ route('treinos') }}" class="btn btn-secondary">Cancelar</a>
+        <button type="submit" class="btn btn-success"><i class="fas fa-save"></i></button>
+        <a href="{{ route('treinos') }}" class="btn btn-info"><i class="fas fa-angle-left"></i></a>
     </form>
 @endsection

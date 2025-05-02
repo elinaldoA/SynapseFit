@@ -66,9 +66,9 @@
                     </select>
                 </div>
 
-                <div class="form-group d-flex justify-content-between">
-                    <a href="{{ route('usuarios') }}" class="btn btn-secondary">Cancelar</a>
-                    <button type="submit" class="btn btn-primary">Atualizar</button>
+                <div class="form-group d-flex justify-content-start">
+                    <button type="submit" class="btn btn-success m-1"><i class="fas fa-save"></i></button>
+                    <a href="{{ route('usuarios') }}" class="btn btn-info m-1"><i class="fas fa-angle-left"></i></a>
                 </div>
             </form>
         </div>

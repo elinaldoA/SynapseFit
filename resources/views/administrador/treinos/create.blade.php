@@ -59,6 +59,6 @@
         </div>
 
         <button type="submit" class="btn btn-primary">Salvar</button>
-        <a href="{{ route('treinos') }}" class="btn btn-secondary">Cancelar</a>
+        <a href="{{ route('treinos') }}" class="btn btn-info"><i class="fas fa-angle-left"></i></a>
     </form>
 @endsection

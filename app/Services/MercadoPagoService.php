@@ -55,8 +55,15 @@ class MercadoPagoService
                 'url' => $preference->init_point,
             ];
         } catch (\Exception $e) {
-            Log::error('[MercadoPagoService] Erro ao criar preferência.', [
-                'erro' => $e->getMessage()
+            Log::error('[MercadoPagoService] Falha ao criar preferência.', [
+                'erro' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+                'exception_class' => get_class($e),
+                'data' => [
+                    'titulo' => $titulo,
+                    'valor' => $valor,
+                    'metodo_pagamento' => $metodoPagamento,
+                ],
             ]);
 
             return [

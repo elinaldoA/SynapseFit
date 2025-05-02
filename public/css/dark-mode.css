@@ -1,0 +1,137 @@
+body.dark-mode {
+    background-color: #12151e !important;
+    color: #d1d5db !important; /* texto geral */
+    transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out;
+}
+
+.dark-mode .navbar,
+.dark-mode .sidebar,
+.dark-mode .card,
+.dark-mode .modal-content,
+.dark-mode .dropdown-menu,
+.dark-mode .list-group-item,
+.dark-mode .toast,
+.dark-mode .popover {
+    background-color: #1f2333 !important;
+    color: #d1d5db !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3) !important;
+    transition: all 0.5s ease-in-out;
+}
+
+.dark-mode .form-control,
+.dark-mode input,
+.dark-mode textarea,
+.dark-mode select {
+    background-color: #2b2e41 !important;
+    color: #d1d5db !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out;
+}
+
+.dark-mode .form-control::placeholder {
+    color: #9aa0b9 !important;
+}
+
+.dark-mode .btn {
+    background-color: #343952 !important;
+    color: #d1d5db !important;
+    border: none !important;
+    transition: background-color 0.4s ease, transform 0.3s ease-in-out;
+}
+
+.dark-mode .btn:hover {
+    background-color: #4e5d78 !important;
+    transform: scale(1.05);
+}
+
+.dark-mode .btn-primary {
+    background-color: #5a6dee !important;
+    border: none !important;
+    color: #f1f1f1 !important;
+    transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.dark-mode .btn-primary:hover {
+    background-color: #7887ff !important;
+    transform: scale(1.05);
+}
+
+.dark-mode .table {
+    background-color: #1c1f2b !important;
+    color: #d1d5db !important;
+    transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out;
+}
+
+.dark-mode .table th,
+.dark-mode .table td {
+    border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.dark-mode .alert {
+    background-color: #2e3449 !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: #f1f1f1 !important;
+    transition: background-color 0.5s ease-in-out;
+}
+
+.dark-mode a {
+    color: #8ab4f8 !important;
+    transition: color 0.3s ease-in-out;
+}
+
+.dark-mode a:hover {
+    color: #aecbfa !important;
+}
+
+.dark-mode .progress {
+    background-color: #3a3d4f !important;
+}
+
+.dark-mode .progress-bar {
+    background-color: #6c7cd5 !important;
+}
+
+.dark-mode hr {
+    border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+.dark-mode ::-webkit-scrollbar {
+    width: 8px;
+}
+
+.dark-mode ::-webkit-scrollbar-thumb {
+    background-color: #4e5d78;
+    border-radius: 4px;
+}
+
+.dark-mode ::-webkit-scrollbar-track {
+    background-color: #1e1e2f;
+}
+
+.dark-mode .card-header {
+    background-color: #25293c !important;
+    color: #d1d5db !important;
+    border-bottom: 1px solid #3a3f57 !important;
+    transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out;
+}
+
+.dark-mode .card-body {
+    background-color: #1f2333 !important;
+    color: #d1d5db !important;
+    transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out;
+}
+
+.dark-mode footer,
+.dark-mode .footer {
+    background-color: #1a1d2e !important;
+    color: #d1d5db !important;
+    border-top: 1px solid #2d3145 !important;
+    transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out;
+}
+
+.dark-mode div:not(#loading-spinner) {
+    background-color: transparent !important;
+    color: #d1d5db !important;
+    transition: color 0.5s ease-in-out;
+}

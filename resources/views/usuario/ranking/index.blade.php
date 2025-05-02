@@ -30,7 +30,7 @@
         <p class="text-lg mb-4">Você ainda não está no ranking.</p>
     @endif
 
-    <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
+    <table class="min-w-full shadow-md rounded-lg overflow-hidden">
         <thead class="bg-indigo-500 text-white">
             <tr>
                 <th class="py-2 px-4 text-left">Posição</th>

@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\Administrador\AlimentosController;
 use App\Http\Controllers\Administrador\AssinaturaController;
-use App\Http\Controllers\Administrador\DesafioController;
 use App\Http\Controllers\Administrador\ExerciseController;
 use App\Http\Controllers\Administrador\FinanceiroController;
 use App\Http\Controllers\Administrador\UserController;
@@ -19,7 +18,6 @@ use App\Http\Controllers\Usuario\HidratacaoController;
 use App\Http\Controllers\Usuario\JejumController;
 use App\Http\Controllers\Usuario\PlanoController;
 use App\Http\Controllers\Usuario\RankingController;
-use App\Http\Controllers\Usuario\UsuarioDesafioController;
 
 Route::get('/', function () {
     return view('welcome');

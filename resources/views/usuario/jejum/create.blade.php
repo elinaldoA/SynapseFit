@@ -120,10 +120,9 @@
         </div>
 
         <!-- Ações -->
-        <div class="d-flex justify-content-end gap-2">
-            <button type="submit" class="btn btn-primary px-4 m-1">
-                <i class="fas fa-check me-2"></i></button>
-            <a href="{{ route('jejum.index') }}" class="btn btn-outline-secondary px-4 m-1"><i class="fa fa-angle-left"></i></a>
+        <div class="d-flex justify-content-start gap-2">
+            <button type="submit" class="btn btn-success px-4 m-1"><i class="fas fa-save me-2"></i></button>
+            <a href="{{ route('jejum.index') }}" class="btn btn-info px-4 m-1"><i class="fa fa-angle-left"></i></a>
         </div>
     </form>
 </div>

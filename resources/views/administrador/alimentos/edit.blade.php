@@ -10,8 +10,8 @@
 
                 @include('administrador.alimentos.partials.form', ['alimento' => $alimento])
 
-                <button type="submit" class="btn btn-primary">Atualizar</button>
-                <a href="{{ route('alimentos') }}" class="btn btn-secondary">Cancelar</a>
+                <button type="submit" class="btn btn-success"><i class="fas fa-save"></i></button>
+                <a href="{{ route('alimentos') }}" class="btn btn-info"><i class="fas fa-angle-left"></i></a>
             </form>
         </div>
     </div>

@@ -88,8 +88,8 @@
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary"
-                                                        data-dismiss="modal">Cancelar</button>
-                                                    <button type="submit" class="btn btn-danger">Excluir</button>
+                                                        data-dismiss="modal"><i class="fas fa-angle-left"></i></button>
+                                                    <button type="submit" class="btn btn-danger"><i class="fas fa-trash"></i></button>
                                                 </div>
                                             </div>
                                         </form>

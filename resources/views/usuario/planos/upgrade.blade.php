@@ -54,9 +54,20 @@
 
                             <form action="{{ route('planos.assinar', $plano) }}" method="POST">
                                 @csrf
-                                <input type="hidden" name="payment_method" value="pix">
+
+                                <div class="form-group">
+                                    <label for="payment_method_{{ $plano->id }}">Escolha o método de pagamento:</label>
+                                    <select name="payment_method" id="payment_method_{{ $plano->id }}" class="form-control" required>
+                                        <option value="">Selecione...</option>
+                                        <option value="pix">Pix</option>
+                                        <option value="credito">Cartão de Crédito</option>
+                                        <option value="debito">Cartão de Débito</option>
+                                        <option value="boleto">Boleto</option>
+                                    </select>
+                                </div>
+
                                 <button type="submit" class="btn btn-outline-primary mt-2">
-                                    Assinar este plano via PIX
+                                    Assinar este plano
                                 </button>
                             </form>
                         </div>

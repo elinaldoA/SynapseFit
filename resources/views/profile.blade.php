@@ -158,7 +158,7 @@
                         <div class="pl-lg-4">
                             <div class="row">
                                 <div class="col text-center">
-                                    <button type="submit" class="btn btn-primary">Atualizar</button>
+                                    <button type="submit" class="btn btn-success"><i class="fas fa-save"></i></button>
                                 </div>
                             </div>
                         </div>

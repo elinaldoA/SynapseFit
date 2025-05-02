@@ -70,7 +70,8 @@
                             required>
                     </div>
 
-                    <button type="submit" class="btn btn-primary">Atualizar</button>
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i></button>
+                    <a href="{{ route('alimento_consumidos')}}" class="btn btn-info"><i class="fas fa-angle-left"></i></a>
                 </form>
             </div>
         </div>

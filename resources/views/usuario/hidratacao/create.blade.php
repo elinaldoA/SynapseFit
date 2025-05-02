@@ -31,8 +31,8 @@
                     <label for="quantidade">Quantidade (L)</label>
                     <input type="number" name="quantidade" id="quantidade" step="0.01" class="form-control" required>
                 </div>
-                <button type="submit" class="btn btn-success">Salvar</button>
-                <a href="{{ route('hidratacao') }}" class="btn btn-secondary ml-2">Voltar</a>
+                <button type="submit" class="btn btn-success"><i class="fas fa-save"></i></button>
+                <a href="{{ route('hidratacao') }}" class="btn btn-info ml-2"><i class="fas fa-angle-left"></i></a>
             </form>
         </div>
     </div>

@@ -16,6 +16,7 @@
         rel="stylesheet">
     <!-- Styles -->
     <link href="{{ asset('css/sb-admin-2.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/dark-mode.css') }}" rel="stylesheet">
     <!-- Favicon -->
     <link href="{{ asset('img/favicon.ico') }}" rel="icon" type="image/png">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -36,9 +37,9 @@
 
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ url('/home') }}">
-                <div class="sidebar-brand-icon rotate-n-15">
+                <!--<div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-dumbbell"></i>
-                </div>
+                </div>-->
                 <div class="sidebar-brand-text mx-3">Synapse <sup>Fit</sup></div>
             </a>
 
@@ -258,6 +259,11 @@
                                 @endif
                             </div>
                         </li>
+                        <li class="nav-item">
+                            <a href="#" id="toggleDarkMode" class="nav-link" title="Alternar modo escuro">
+                                <i class="fas fa-fw fa-moon"></i>
+                            </a>
+                        </li>
                         <div class="topbar-divider d-none d-sm-block"></div>
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
@@ -339,118 +345,130 @@
         </div>
     </div>
     <!-- Vendor JS -->
-    <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
-    <script src="{{ asset('vendor/bootstrap/js/bootstrap.min.js') }}"></script>
-    <script src="{{ asset('vendor/jquery-easing/jquery.easing.min.js') }}"></script>
+<!-- Vendor JS -->
+<script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
+<script src="{{ asset('vendor/bootstrap/js/bootstrap.min.js') }}"></script>
+<script src="{{ asset('vendor/jquery-easing/jquery.easing.min.js') }}"></script>
 
-    <!-- Template JS -->
-    <script src="{{ asset('js/sb-admin-2.min.js') }}"></script>
+<!-- Template JS -->
+<script src="{{ asset('js/sb-admin-2.min.js') }}"></script>
 
-    <!-- Comportamento: esconder alertas -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            setTimeout(function() {
-                const alertMessages = document.querySelectorAll('.alert');
-                alertMessages.forEach(function(alert) {
-                    alert.style.display = 'none';
-                });
-            }, 5000);
-        });
-    </script>
-
-    <!-- Comportamento: recarregar página a cada 150s -->
-    <script>
-        window.addEventListener('load', function() {
-            setInterval(function() {
-                window.location.reload(true);
-            }, 150000);
-        });
-    </script>
-
-    <!-- Estilos para animações -->
-    <style>
-        #loading-spinner {
-            display: none;
-            position: fixed;
-            inset: 0;
-            z-index: 9999;
-            background: rgba(255, 255, 255, 0.9);
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        #loading-spinner i {
-            font-size: 3rem;
-            color: #007bff;
-            animation: spin 1s linear infinite;
-        }
-
-        #loading-spinner p {
-            margin-top: 1rem;
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: #333;
-        }
-
-        @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-
-        .spin {
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-    </style>
-
-    <!-- Comportamento: loading spinner -->
-    <script>
-        window.addEventListener('load', function() {
-            const spinner = document.getElementById('loading-spinner');
-            spinner.style.opacity = '0';
-            setTimeout(() => spinner.style.display = 'none', 700);
-        });
-
-        window.addEventListener('beforeunload', function() {
-            const spinner = document.getElementById('loading-spinner');
-            spinner.style.display = 'flex';
-            spinner.style.opacity = '1';
-
-            // Garante a animação do ícone
-            const icon = spinner.querySelector('i');
-            if (icon) icon.classList.add('spin');
-        });
-        function playNotificationSound() {
-            var audio = document.getElementById('notification-sound');
-            audio.play();
-        }
-
-        // Função para verificar as notificações a cada 5 segundos
-        setInterval(function() {
-            var unreadCount = {{ auth()->user()->unreadNotifications->count() }};
-
-            // Se o número de notificações não lidas for maior que zero, toca o som
-            if (unreadCount > 0) {
-                playNotificationSound();
-            }
+<!-- Comportamento: Esconder alertas, recarregar página, spinner de carregamento, notificações e modo escuro -->
+<script>
+    // Esconder alertas após 5 segundos
+    document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(function() {
+            const alertMessages = document.querySelectorAll('.alert');
+            alertMessages.forEach(function(alert) {
+                alert.style.display = 'none';
+            });
         }, 5000);
-    </script>
-</body>
+    });
 
+    // Recarregar página a cada 150s
+    window.addEventListener('load', function() {
+        setInterval(function() {
+            window.location.reload(true);
+        }, 150000);
+    });
+
+    // Loading Spinner
+    window.addEventListener('load', function() {
+        const spinner = document.getElementById('loading-spinner');
+        spinner.style.opacity = '0';
+        setTimeout(() => spinner.style.display = 'none', 700);
+    });
+
+    window.addEventListener('beforeunload', function() {
+        const spinner = document.getElementById('loading-spinner');
+        spinner.style.display = 'flex';
+        spinner.style.opacity = '1';
+
+        // Garante a animação do ícone
+        const icon = spinner.querySelector('i');
+        if (icon) icon.classList.add('spin');
+    });
+
+    // Notificação de som a cada 5 segundos
+    function playNotificationSound() {
+        var audio = document.getElementById('notification-sound');
+        audio.play();
+    }
+
+    setInterval(function() {
+        var unreadCount = {{ auth()->user()->unreadNotifications->count() }};
+        if (unreadCount > 0) {
+            playNotificationSound();
+        }
+    }, 5000);
+
+    // Modo escuro
+    document.addEventListener('DOMContentLoaded', function () {
+        const darkModeClass = 'dark-mode';
+        const elementsToToggle = [
+            document.body,
+            document.querySelector('.sidebar'),
+            document.querySelector('.navbar'),
+            document.querySelector('.topbar'),
+            ...document.querySelectorAll('.card, .bg-white')
+        ];
+
+        // Verificar se o modo escuro está ativado no localStorage
+        if (localStorage.getItem('darkMode') === 'enabled') {
+            elementsToToggle.forEach(el => el?.classList.add(darkModeClass));
+        }
+
+        // Alternar entre modo claro e escuro ao clicar no botão
+        document.getElementById('toggleDarkMode')?.addEventListener('click', function () {
+            const isEnabled = localStorage.getItem('darkMode') === 'enabled';
+
+            elementsToToggle.forEach(el => el?.classList.toggle(darkModeClass));
+            localStorage.setItem('darkMode', isEnabled ? 'disabled' : 'enabled');
+        });
+    });
+</script>
+
+<!-- Estilos para animações -->
+<style>
+    #loading-spinner {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        background: rgba(255, 255, 255, 0.9);
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    #loading-spinner i {
+        font-size: 3rem;
+        color: #007bff;
+        animation: spin 1s linear infinite;
+    }
+
+    #loading-spinner p {
+        margin-top: 1rem;
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #333;
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    .spin {
+        animation: spin 1s linear infinite;
+    }
+</style>
+
+</body>
 </html>
